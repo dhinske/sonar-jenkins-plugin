@@ -25,7 +25,6 @@ public final class JenkinsPlugin extends SonarPlugin {
 //        .build(),
 
       Jenkins.class,
-      JenkinsInputFileFilter.class,
       XmlRulesDefinition.class,
       XmlSonarWayProfile.class,
       ConfigXMLSensor.class);
