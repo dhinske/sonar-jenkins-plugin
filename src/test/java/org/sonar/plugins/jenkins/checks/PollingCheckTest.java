@@ -27,5 +27,4 @@ public class PollingCheckTest {
 		check.validate(source);
 		assertEquals(0, source.getConfigIssues().size());
 	}
-
 }
