@@ -9,19 +9,15 @@ import org.sonar.plugins.jenkins.language.Jenkins;
 
 public final class XmlSonarWayProfile extends ProfileDefinition {
 
-  private final AnnotationProfileParser annotationProfileParser;
+	private final AnnotationProfileParser annotationProfileParser;
 
-  public XmlSonarWayProfile(AnnotationProfileParser annotationProfileParser) {
-    this.annotationProfileParser = annotationProfileParser;
-  }
+	public XmlSonarWayProfile(AnnotationProfileParser annotationProfileParser) {
+		this.annotationProfileParser = annotationProfileParser;
+	}
 
-  @Override
-  public RulesProfile createProfile(ValidationMessages validation) {
-    return annotationProfileParser.parse(
-        CheckRepository.REPOSITORY_KEY,
-        CheckRepository.SONAR_WAY_PROFILE_NAME,
-        Jenkins.KEY,
-        CheckRepository.getCheckClasses(),
-        validation);
-  }
+	@Override
+	public RulesProfile createProfile(ValidationMessages validation) {
+		return annotationProfileParser.parse(CheckRepository.REPOSITORY_KEY, CheckRepository.SONAR_WAY_PROFILE_NAME,
+				Jenkins.KEY, CheckRepository.getCheckClasses(), validation);
+	}
 }

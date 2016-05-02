@@ -6,28 +6,28 @@ import org.sonar.plugins.jenkins.config.ConfigXmlSource;
 
 public abstract class AbstractConfigXmlCheck {
 
-  private RuleKey ruleKey;
-  private ConfigXmlSource configXmlSource;
+	private RuleKey ruleKey;
+	private ConfigXmlSource configXmlSource;
 
-  protected final void createViolation(Integer linePosition, String message) {
-    getConfigXMLSource().addViolation(new ConfigXmlIssue(ruleKey, linePosition, message));
-  }
+	protected final void createViolation(Integer linePosition, String message) {
+		getConfigXMLSource().addViolation(new ConfigXmlIssue(ruleKey, linePosition, message));
+	}
 
-  protected ConfigXmlSource getConfigXMLSource() {
-    return configXmlSource;
-  }
+	protected ConfigXmlSource getConfigXMLSource() {
+		return configXmlSource;
+	}
 
-  public final void setRuleKey(RuleKey ruleKey) {
-    this.ruleKey = ruleKey;
-  }
+	public final void setRuleKey(RuleKey ruleKey) {
+		this.ruleKey = ruleKey;
+	}
 
-  public RuleKey getRuleKey() {
-    return ruleKey;
-  }
+	public RuleKey getRuleKey() {
+		return ruleKey;
+	}
 
-  protected void setConfigXmlSource(ConfigXmlSource configXmlSource) {
-    this.configXmlSource = configXmlSource;
-  }
+	protected void setConfigXmlSource(ConfigXmlSource configXmlSource) {
+		this.configXmlSource = configXmlSource;
+	}
 
-  public abstract void validate(ConfigXmlSource configXmlSource);
+	public abstract void validate(ConfigXmlSource configXmlSource);
 }

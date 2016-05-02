@@ -10,13 +10,12 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-@Rule(key = "UseLogRotatorCheck", name = "You should use the LogRotator-Plugin", priority = Priority.MINOR, tags = { "convention" })
+@Rule(key = "UseLogRotatorCheck", name = "You should use the LogRotator-Plugin", priority = Priority.MINOR, tags = {
+		"convention" })
 @BelongsToProfile(title = CheckRepository.SONAR_WAY_PROFILE_NAME, priority = Priority.MINOR)
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.RESOURCE_RELIABILITY)
 @SqaleConstantRemediation("1min")
 public class UseLogRotatorCheck extends AbstractConfigXmlCheck {
-
-	
 
 	@Override
 	public void validate(ConfigXmlSource xmlSourceCode) {

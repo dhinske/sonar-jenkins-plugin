@@ -15,15 +15,15 @@ public class PollingCheckTest {
 		DefaultInputFile inputFile = new DefaultInputFile("");
 		inputFile.setFile(new File("src/test/resources/polling_config.xml"));
 		ConfigXmlSource source = new ConfigXmlSource(inputFile);
-		
+
 		PollingCheck check = new PollingCheck();
 		check.validate(source);
 		assertEquals(1, source.getConfigIssues().size());
-		
+
 		inputFile = new DefaultInputFile("");
 		inputFile.setFile(new File("src/test/resources/noPolling_config.xml"));
 		source = new ConfigXmlSource(inputFile);
-		
+
 		check.validate(source);
 		assertEquals(0, source.getConfigIssues().size());
 	}

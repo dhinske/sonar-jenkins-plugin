@@ -8,7 +8,7 @@ public class CheckRepository {
 
 	public static final String REPOSITORY_KEY = "jenkins";
 	public static final String REPOSITORY_NAME = "SonarQube Jenkins";
-	public static final String SONAR_WAY_PROFILE_NAME = "Sonar way";
+	public static final String SONAR_WAY_PROFILE_NAME = "Sonar way Jenkins";
 
 	private CheckRepository() {
 	}

@@ -34,7 +34,8 @@ public class ConfigXMLSensor implements Sensor {
 
 	public ConfigXMLSensor(FileSystem fileSystem, ResourcePerspectives resourcePerspectives, CheckFactory checkFactory,
 			FileLinesContextFactory fileLinesContextFactory) {
-		this.checks = checkFactory.create(CheckRepository.REPOSITORY_KEY).addAnnotatedChecks(CheckRepository.getCheckClasses());
+		this.checks = checkFactory.create(CheckRepository.REPOSITORY_KEY)
+				.addAnnotatedChecks(CheckRepository.getCheckClasses());
 		this.fileSystem = fileSystem;
 		this.resourcePerspectives = resourcePerspectives;
 		this.mainFilesPredicate = fileSystem.predicates().and(fileSystem.predicates().hasType(InputFile.Type.MAIN),

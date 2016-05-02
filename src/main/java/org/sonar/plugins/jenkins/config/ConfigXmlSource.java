@@ -42,14 +42,14 @@ public class ConfigXmlSource {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
-		} 
+		}
 		return true;
 	}
 
 	public InputFile getInputFile() {
 		return xmlFile;
 	}
-	
+
 	public String getJobName() {
 		return xmlFile.file().getParentFile().getName();
 	}
