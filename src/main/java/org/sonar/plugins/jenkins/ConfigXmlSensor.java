@@ -14,7 +14,6 @@ import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.component.Perspective;
 import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.issue.Issuable;
-import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.jenkins.checks.AbstractConfigXmlCheck;
 import org.sonar.plugins.jenkins.checks.CheckRepository;
@@ -24,16 +23,15 @@ import org.sonar.plugins.jenkins.language.Jenkins;
 
 import com.google.common.annotations.VisibleForTesting;
 
-public class ConfigXMLSensor implements Sensor {
+public class ConfigXmlSensor implements Sensor {
 
 	private final Checks<Object> checks;
 	private final FileSystem fileSystem;
 	private final ResourcePerspectives resourcePerspectives;
 	private final FilePredicate mainFilesPredicate;
-	private static final Logger LOG = LoggerFactory.getLogger(ConfigXMLSensor.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ConfigXmlSensor.class);
 
-	public ConfigXMLSensor(FileSystem fileSystem, ResourcePerspectives resourcePerspectives, CheckFactory checkFactory,
-			FileLinesContextFactory fileLinesContextFactory) {
+	public ConfigXmlSensor(FileSystem fileSystem, ResourcePerspectives resourcePerspectives, CheckFactory checkFactory) {
 		this.checks = checkFactory.create(CheckRepository.REPOSITORY_KEY)
 				.addAnnotatedChecks(CheckRepository.getCheckClasses());
 		this.fileSystem = fileSystem;

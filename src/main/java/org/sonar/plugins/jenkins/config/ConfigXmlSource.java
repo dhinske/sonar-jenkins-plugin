@@ -1,6 +1,9 @@
 package org.sonar.plugins.jenkins.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
+import org.sonar.plugins.jenkins.ConfigXmlSensor;
 import org.w3c.dom.Document;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ConfigXmlSource {
 
+	private static final Logger LOG = LoggerFactory.getLogger(ConfigXmlSource.class);
 	private final List<ConfigXmlIssue> configXmlIssues = new ArrayList<>();
 
 	private InputFile xmlFile;
@@ -40,7 +44,7 @@ public class ConfigXmlSource {
 			dBuilder = dbFactory.newDocumentBuilder();
 			xmlFileDocument = dBuilder.parse(xmlFile.file());
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(e.getMessage());
 			return false;
 		}
 		return true;

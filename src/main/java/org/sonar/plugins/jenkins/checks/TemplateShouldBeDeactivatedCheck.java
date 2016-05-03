@@ -27,8 +27,7 @@ public class TemplateShouldBeDeactivatedCheck extends AbstractConfigXmlCheck {
 		Document document = getConfigXMLSource().getDocument();
 		NodeList nodes = document.getElementsByTagName("disabled");
 		for (int i = 0; i < nodes.getLength(); i++) {
-			System.out.println(nodes.item(i).getFirstChild().getNodeValue());
-			if (nodes.item(i).getFirstChild().getNodeValue().equals("true")) {
+			if ("true".equals(nodes.item(i).getFirstChild().getNodeValue())) {
 				return;
 			}
 		}
