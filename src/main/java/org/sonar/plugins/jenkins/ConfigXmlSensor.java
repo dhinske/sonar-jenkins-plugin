@@ -14,12 +14,15 @@ import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.component.Perspective;
 import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.issue.Issuable;
+import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.jenkins.checks.AbstractConfigXmlCheck;
 import org.sonar.plugins.jenkins.checks.CheckRepository;
-import org.sonar.plugins.jenkins.config.ConfigXmlIssue;
-import org.sonar.plugins.jenkins.config.ConfigXmlSource;
+import org.sonar.plugins.jenkins.config.JobConfigIssue;
+import org.sonar.plugins.jenkins.config.JobConfigSource;
+import org.sonar.plugins.jenkins.config.JobType;
 import org.sonar.plugins.jenkins.language.Jenkins;
+import org.sonar.plugins.jenkins.metrics.JobTypeMetric;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -30,6 +33,10 @@ public class ConfigXmlSensor implements Sensor {
 	private final ResourcePerspectives resourcePerspectives;
 	private final FilePredicate mainFilesPredicate;
 	private static final Logger LOG = LoggerFactory.getLogger(ConfigXmlSensor.class);
+	
+	private double freestyleJobs;
+	private double pipelineJobs;
+	private double mbPipelineJobs;
 
 	public ConfigXmlSensor(FileSystem fileSystem, ResourcePerspectives resourcePerspectives, CheckFactory checkFactory) {
 		this.checks = checkFactory.create(CheckRepository.REPOSITORY_KEY)
@@ -38,6 +45,10 @@ public class ConfigXmlSensor implements Sensor {
 		this.resourcePerspectives = resourcePerspectives;
 		this.mainFilesPredicate = fileSystem.predicates().and(fileSystem.predicates().hasType(InputFile.Type.MAIN),
 				fileSystem.predicates().hasLanguage(Jenkins.KEY));
+		
+		freestyleJobs = 0;
+		pipelineJobs = 0;
+		mbPipelineJobs = 0;
 	}
 
 	/**
@@ -45,23 +56,50 @@ public class ConfigXmlSensor implements Sensor {
 	 */
 	@Override
 	public void analyse(Project project, SensorContext sensorContext) {
+		
 		for (InputFile inputFile : fileSystem.inputFiles(mainFilesPredicate)) {
-			runChecks(inputFile);
+			JobConfigSource source = new JobConfigSource(inputFile);
+			JobType type = source.getJobType();
+			System.out.println("GOT TYPE: " + type.name());
+			switch (type) {
+			case FREESTYLE:
+				freestyleJobs++;
+				break;
+			case PIPELINE:
+				pipelineJobs++;
+				break;
+			case MB_PIPELINE:
+				mbPipelineJobs++;
+				break;
+			default:
+				break;
+			}
+			
+			runChecks(source);
 		}
+		Measure measure;
+		measure = new Measure(JobTypeMetric.AMOUNT_FREESTYLE);
+		measure.setValue(freestyleJobs);
+	    sensorContext.saveMeasure(measure);
+		measure = new Measure(JobTypeMetric.AMOUNT_PIPELINE);
+		measure.setValue(pipelineJobs);
+	    sensorContext.saveMeasure(measure);
+		measure = new Measure(JobTypeMetric.AMOUNT_MB_PIPELINE);
+		measure.setValue(mbPipelineJobs);
+	    sensorContext.saveMeasure(measure);
+
 	}
 
-	private void runChecks(InputFile inputFile) {
+	private void runChecks(JobConfigSource source) {
 		try {
-			ConfigXmlSource sourceCode = new ConfigXmlSource(inputFile);
-
 			for (Object check : checks.all()) {
-				LOG.info(((AbstractConfigXmlCheck) check).getRuleKey() + " - " + inputFile.absolutePath());
+				LOG.info(((AbstractConfigXmlCheck) check).getRuleKey() + " - " + source.getInputFile().absolutePath());
 				((AbstractConfigXmlCheck) check).setRuleKey(checks.ruleKey(check));
-				((AbstractConfigXmlCheck) check).validate(sourceCode);
+				((AbstractConfigXmlCheck) check).validate(source);
 			}
-			saveIssue(sourceCode);
+			saveIssue(source);
 		} catch (Exception e) {
-			throw new IllegalStateException("Could not analyze the file " + inputFile.absolutePath(), e);
+			throw new IllegalStateException("Could not analyze the file " + source.getInputFile().absolutePath(), e);
 		}
 	}
 
@@ -75,8 +113,8 @@ public class ConfigXmlSensor implements Sensor {
 	}
 
 	@VisibleForTesting
-	protected void saveIssue(ConfigXmlSource sourceCode) {
-		for (ConfigXmlIssue xmlIssue : sourceCode.getConfigIssues()) {
+	protected void saveIssue(JobConfigSource sourceCode) {
+		for (JobConfigIssue xmlIssue : sourceCode.getConfigIssues()) {
 			Issuable issuable = resourcePerspectives.as(Issuable.class, sourceCode.getInputFile());
 
 			if (issuable != null) {

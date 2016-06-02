@@ -1,20 +1,20 @@
 package org.sonar.plugins.jenkins.checks;
 
 import org.sonar.api.rule.RuleKey;
-import org.sonar.plugins.jenkins.config.ConfigXmlIssue;
-import org.sonar.plugins.jenkins.config.ConfigXmlSource;
+import org.sonar.plugins.jenkins.config.JobConfigIssue;
+import org.sonar.plugins.jenkins.config.JobConfigSource;
 
 public abstract class AbstractConfigXmlCheck {
 
 	private RuleKey ruleKey;
-	private ConfigXmlSource configXmlSource;
+	private JobConfigSource JobConfigSource;
 
 	protected final void createViolation(Integer linePosition, String message) {
-		getConfigXMLSource().addViolation(new ConfigXmlIssue(ruleKey, linePosition, message));
+		getJobConfigSource().addViolation(new JobConfigIssue(ruleKey, linePosition, message));
 	}
 
-	protected ConfigXmlSource getConfigXMLSource() {
-		return configXmlSource;
+	protected JobConfigSource getJobConfigSource() {
+		return JobConfigSource;
 	}
 
 	public final void setRuleKey(RuleKey ruleKey) {
@@ -25,9 +25,9 @@ public abstract class AbstractConfigXmlCheck {
 		return ruleKey;
 	}
 
-	protected void setConfigXmlSource(ConfigXmlSource configXmlSource) {
-		this.configXmlSource = configXmlSource;
+	protected void setJobConfigSource(JobConfigSource JobConfigSource) {
+		this.JobConfigSource = JobConfigSource;
 	}
 
-	public abstract void validate(ConfigXmlSource configXmlSource);
+	public abstract void validate(JobConfigSource JobConfigSource);
 }

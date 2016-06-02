@@ -1,8 +1,10 @@
 package org.sonar.plugins.jenkins;
 
 import com.google.common.collect.ImmutableList;
+
 import org.sonar.api.SonarPlugin;
 import org.sonar.plugins.jenkins.language.Jenkins;
+import org.sonar.plugins.jenkins.metrics.JobTypeMetric;
 import org.sonar.plugins.jenkins.rules.XmlRulesDefinition;
 import org.sonar.plugins.jenkins.rules.XmlSonarWayProfile;
 
@@ -15,6 +17,6 @@ public final class JenkinsPlugin extends SonarPlugin {
 	@Override
 	public List getExtensions() {
 		return ImmutableList.of(Jenkins.class, XmlRulesDefinition.class, XmlSonarWayProfile.class,
-				ConfigXmlSensor.class);
+				ConfigXmlSensor.class, JobTypeMetric.class);
 	}
 }

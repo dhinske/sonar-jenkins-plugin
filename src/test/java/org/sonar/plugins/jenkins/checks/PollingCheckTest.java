@@ -6,7 +6,7 @@ import java.io.File;
 
 import org.junit.Test;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
-import org.sonar.plugins.jenkins.config.ConfigXmlSource;
+import org.sonar.plugins.jenkins.config.JobConfigSource;
 
 public class PollingCheckTest {
 
@@ -14,7 +14,7 @@ public class PollingCheckTest {
 	public void test() {
 		DefaultInputFile inputFile = new DefaultInputFile("");
 		inputFile.setFile(new File("src/test/resources/polling_config.xml"));
-		ConfigXmlSource source = new ConfigXmlSource(inputFile);
+		JobConfigSource source = new JobConfigSource(inputFile);
 
 		PollingCheck check = new PollingCheck();
 		check.validate(source);
@@ -22,7 +22,7 @@ public class PollingCheckTest {
 
 		inputFile = new DefaultInputFile("");
 		inputFile.setFile(new File("src/test/resources/noPolling_config.xml"));
-		source = new ConfigXmlSource(inputFile);
+		source = new JobConfigSource(inputFile);
 
 		check.validate(source);
 		assertEquals(0, source.getConfigIssues().size());

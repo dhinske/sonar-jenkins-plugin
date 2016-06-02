@@ -3,34 +3,36 @@ package org.sonar.plugins.jenkins.config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
-import org.sonar.plugins.jenkins.ConfigXmlSensor;
 import org.w3c.dom.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-public class ConfigXmlSource {
+public class JobConfigSource {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ConfigXmlSource.class);
-	private final List<ConfigXmlIssue> configXmlIssues = new ArrayList<>();
+	private static final Logger LOG = LoggerFactory.getLogger(JobConfigSource.class);
+	private final List<JobConfigIssue> configXmlIssues = new ArrayList<>();
 
 	private InputFile xmlFile;
 
-	Document xmlFileDocument;
+	Document xmlDocument;
+	//TODO: get if possible
+	String jenkinsFile;
 
-	public ConfigXmlSource(InputFile xmlFile) {
+	public JobConfigSource(InputFile xmlFile) {
 		this.xmlFile = xmlFile;
 		parseSource();
 	}
 
-	public void addViolation(ConfigXmlIssue xmlIssue) {
-		this.configXmlIssues.add(xmlIssue);
+	public void addViolation(JobConfigIssue issue) {
+		this.configXmlIssues.add(issue);
 	}
 
 	public Document getDocument() {
-		return xmlFileDocument;
+		return xmlDocument;
 	}
 
 	/**
@@ -42,7 +44,7 @@ public class ConfigXmlSource {
 		DocumentBuilder dBuilder = null;
 		try {
 			dBuilder = dbFactory.newDocumentBuilder();
-			xmlFileDocument = dBuilder.parse(xmlFile.file());
+			xmlDocument = dBuilder.parse(xmlFile.file());
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
 			return false;
@@ -58,12 +60,25 @@ public class ConfigXmlSource {
 		return xmlFile.file().getParentFile().getName();
 	}
 
-	public List<ConfigXmlIssue> getConfigIssues() {
+	public List<JobConfigIssue> getConfigIssues() {
 		return configXmlIssues;
 	}
 
 	@Override
 	public String toString() {
 		return xmlFile.absolutePath();
+	}
+
+	public JobType getJobType() {
+		if (xmlDocument.getFirstChild().getNodeName().equals("project")) {
+			return JobType.FREESTYLE;
+		}
+		if (xmlDocument.getFirstChild().getNodeName().equals("flow-definition")) {
+			return JobType.PIPELINE;
+		}
+		if (xmlDocument.getFirstChild().getNodeName().equals("org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject")) {
+			return JobType.MB_PIPELINE;
+		}
+		return null;
 	}
 }

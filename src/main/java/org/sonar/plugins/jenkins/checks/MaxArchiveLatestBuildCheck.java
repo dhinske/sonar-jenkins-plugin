@@ -4,7 +4,7 @@ import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.BelongsToProfile;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.plugins.jenkins.config.ConfigXmlSource;
+import org.sonar.plugins.jenkins.config.JobConfigSource;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.w3c.dom.Document;
@@ -17,10 +17,10 @@ import org.w3c.dom.NodeList;
 public class MaxArchiveLatestBuildCheck extends AbstractConfigXmlCheck {
 
 	@Override
-	public void validate(ConfigXmlSource xmlSourceCode) {
-		setConfigXmlSource(xmlSourceCode);
+	public void validate(JobConfigSource xmlSourceCode) {
+		setJobConfigSource(xmlSourceCode);
 
-		Document document = getConfigXMLSource().getDocument();
+		Document document = getJobConfigSource().getDocument();
 		NodeList nodes = document.getElementsByTagName("artifactNumToKeep");
 		if (nodes.getLength() > 0) {
 			int size = Integer.parseInt(nodes.item(0).getFirstChild().getNodeValue());
