@@ -1,8 +1,10 @@
-package org.sonar.plugins.jenkins.config;
+package org.sonar.plugins.jenkins.config.types;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
+import org.sonar.plugins.jenkins.config.JobConfigIssue;
+import org.sonar.plugins.jenkins.config.JobType;
 import org.w3c.dom.Document;
 
 import java.util.ArrayList;
@@ -11,24 +13,19 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-public class JobConfigSource {
+/**
+ * contains all sources possible for a single job
+ */
 
-	private static final Logger LOG = LoggerFactory.getLogger(JobConfigSource.class);
-	private final List<JobConfigIssue> configXmlIssues = new ArrayList<>();
+public class ConfigXml extends Config{
 
-	private InputFile xmlFile;
+	private static final Logger LOG = LoggerFactory.getLogger(ConfigXml.class);
 
 	Document xmlDocument;
-	//TODO: get if possible
-	String jenkinsFile;
 
-	public JobConfigSource(InputFile xmlFile) {
-		this.xmlFile = xmlFile;
+	public ConfigXml(InputFile file) {
+		super(file);
 		parseSource();
-	}
-
-	public void addViolation(JobConfigIssue issue) {
-		this.configXmlIssues.add(issue);
 	}
 
 	public Document getDocument() {
@@ -44,7 +41,7 @@ public class JobConfigSource {
 		DocumentBuilder dBuilder = null;
 		try {
 			dBuilder = dbFactory.newDocumentBuilder();
-			xmlDocument = dBuilder.parse(xmlFile.file());
+			xmlDocument = dBuilder.parse(inputFile.file());
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
 			return false;
@@ -53,11 +50,11 @@ public class JobConfigSource {
 	}
 
 	public InputFile getInputFile() {
-		return xmlFile;
+		return inputFile;
 	}
 
 	public String getJobName() {
-		return xmlFile.file().getParentFile().getName();
+		return inputFile.file().getParentFile().getName();
 	}
 
 	public List<JobConfigIssue> getConfigIssues() {
@@ -66,7 +63,7 @@ public class JobConfigSource {
 
 	@Override
 	public String toString() {
-		return xmlFile.absolutePath();
+		return inputFile.absolutePath();
 	}
 
 	public JobType getJobType() {

@@ -4,7 +4,7 @@ import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.BelongsToProfile;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.plugins.jenkins.config.JobConfigSource;
+import org.sonar.plugins.jenkins.config.types.ConfigXml;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
@@ -15,7 +15,7 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 public class JobNameSanityCheck extends AbstractConfigXmlCheck {
 
 	@Override
-	public void validate(JobConfigSource xmlSourceCode) {
+	public void validate(ConfigXml xmlSourceCode) {
 		setJobConfigSource(xmlSourceCode);
 
 		String jobName = getJobConfigSource().getJobName();

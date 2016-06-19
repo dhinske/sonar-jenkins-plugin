@@ -6,7 +6,7 @@ public class Jenkins extends AbstractLanguage {
 
   public static final String KEY = "jenkins";
 
-  private static final String JENKINS_LANGUAGE_NAME = "Jenkins";
+  private static final String JENKINS_LANGUAGE_NAME = "jenkins";
 
   public Jenkins() {
     super(KEY, JENKINS_LANGUAGE_NAME);
@@ -14,6 +14,6 @@ public class Jenkins extends AbstractLanguage {
 
   @Override
   public String[] getFileSuffixes() {
-    return new String[] {".xml"};
+    return new String[] {};
   }
 }

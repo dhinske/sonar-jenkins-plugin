@@ -5,7 +5,7 @@ import org.sonar.plugins.jenkins.checks.CheckRepository;
 import org.sonar.plugins.jenkins.language.Jenkins;
 import org.sonar.squidbridge.annotations.AnnotationBasedRulesDefinition;
 
-public final class XmlRulesDefinition implements RulesDefinition {
+public final class ConfigXmlRulesDefinition implements RulesDefinition {
 
 	@Override
 	public void define(Context context) {

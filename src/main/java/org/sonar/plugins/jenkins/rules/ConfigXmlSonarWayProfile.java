@@ -7,11 +7,11 @@ import org.sonar.api.utils.ValidationMessages;
 import org.sonar.plugins.jenkins.checks.CheckRepository;
 import org.sonar.plugins.jenkins.language.Jenkins;
 
-public final class XmlSonarWayProfile extends ProfileDefinition {
+public final class ConfigXmlSonarWayProfile extends ProfileDefinition {
 
 	private final AnnotationProfileParser annotationProfileParser;
 
-	public XmlSonarWayProfile(AnnotationProfileParser annotationProfileParser) {
+	public ConfigXmlSonarWayProfile(AnnotationProfileParser annotationProfileParser) {
 		this.annotationProfileParser = annotationProfileParser;
 	}
 
