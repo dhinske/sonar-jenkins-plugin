@@ -17,6 +17,6 @@ public final class JenkinsPlugin extends SonarPlugin {
 	@Override
 	public List getExtensions() {
 		return ImmutableList.of(Jenkins.class, ConfigXmlRulesDefinition.class, ConfigXmlSonarWayProfile.class,
-				ConfigXmlSensor.class, JobTypeMetric.class);
+				JenkinsSensor.class, JobTypeMetric.class);
 	}
 }

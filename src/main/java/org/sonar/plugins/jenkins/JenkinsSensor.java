@@ -19,29 +19,30 @@ import org.sonar.api.resources.Project;
 import org.sonar.plugins.jenkins.checks.AbstractConfigXmlCheck;
 import org.sonar.plugins.jenkins.checks.CheckRepository;
 import org.sonar.plugins.jenkins.config.ConfigSources;
+import org.sonar.plugins.jenkins.config.JobConfig;
 import org.sonar.plugins.jenkins.config.JobConfigIssue;
 import org.sonar.plugins.jenkins.config.JobType;
-import org.sonar.plugins.jenkins.config.types.Config;
+import org.sonar.plugins.jenkins.config.types.JobConfigSource;
 import org.sonar.plugins.jenkins.config.types.ConfigXml;
 import org.sonar.plugins.jenkins.language.Jenkins;
 import org.sonar.plugins.jenkins.metrics.JobTypeMetric;
 
 import com.google.common.annotations.VisibleForTesting;
 
-public class ConfigXmlSensor implements Sensor {
+public class JenkinsSensor implements Sensor {
 
 	private final Checks<Object> checks;
 	private final FileSystem fileSystem;
 	private final ResourcePerspectives resourcePerspectives;
 	private final FilePredicate mainFilesPredicate;
-	private static final Logger LOG = LoggerFactory.getLogger(ConfigXmlSensor.class);
+	private static final Logger LOG = LoggerFactory.getLogger(JenkinsSensor.class);
 	
 	private ConfigSources configSources;
 	private double freestyleJobs;
 	private double pipelineJobs;
 	private double mbPipelineJobs;
 
-	public ConfigXmlSensor(FileSystem fileSystem, ResourcePerspectives resourcePerspectives, CheckFactory checkFactory) {
+	public JenkinsSensor(FileSystem fileSystem, ResourcePerspectives resourcePerspectives, CheckFactory checkFactory) {
 		this.checks = checkFactory.create(CheckRepository.REPOSITORY_KEY)
 				.addAnnotatedChecks(CheckRepository.getCheckClasses());
 		this.fileSystem = fileSystem;
@@ -82,8 +83,8 @@ public class ConfigXmlSensor implements Sensor {
 			
 			//runChecks(source);
 		}
-		for (Config configXml : configSources.getConfigXmls()) {
-			
+		for (JobConfig config : configSources.getJobs().values()) {
+			runChecks(config.getConfigXml());
 		}
 //		Measure measure;
 //		measure = new Measure(JobTypeMetric.AMOUNT_FREESTYLE);

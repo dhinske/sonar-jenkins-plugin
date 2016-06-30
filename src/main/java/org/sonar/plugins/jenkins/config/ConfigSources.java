@@ -1,11 +1,9 @@
 package org.sonar.plugins.jenkins.config;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.HashMap;
+import java.util.Map;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.plugins.jenkins.config.types.ConfigXml;
-import org.sonar.plugins.jenkins.config.types.Pipeline;
 
 /**
  * All different types of sources for a Job-configuration
@@ -13,31 +11,43 @@ import org.sonar.plugins.jenkins.config.types.Pipeline;
  */
 public class ConfigSources {
 
-	private Set<ConfigXml> configXmls;
-	private Set<Pipeline> pipelines;
-	private Set<ConfigXml> workflowLib;
+	private Map<String, JobConfig> jobs;
+	private WorkflowLibs workFlowLibs;
 	
+	public Map<String, JobConfig> getJobs() {
+		return jobs;
+	}
+
+	public WorkflowLibs getWorkFlowLibs() {
+		return workFlowLibs;
+	}
+
 	public ConfigSources() {
-		configXmls = new HashSet<>();
-		pipelines = new HashSet<>();
-		workflowLib = new HashSet<>();
+		jobs = new HashMap<>();
+		workFlowLibs = new WorkflowLibs();
 	}
 	
+	/**
+	 * Identify source and add it to internal datastructure
+	 */
 	public void addSource(InputFile file) {
-		if (file.file().getName().equals("config.xml")) {
-			configXmls.add(new ConfigXml(file));			
+		String fileName = file.file().getName();
+		
+		// config.xml
+		if (fileName.equals("config.xml")) {
+			JobConfig config = jobs.get(file.file().getParentFile().getName());
+			if (config == null) {
+				config = new JobConfig();
+			}
+			config.setConfigXml(new ConfigXml(file));			
 		}
+		// Pipeline-Script
+		if (!fileName.contains(".")) {
+			
+		}
+		// TODO: workflow-libs
+		
+		// TODO: additional groovy-scripts
 	}
 	
-	public Set<ConfigXml> getConfigXmls() {
-		return configXmls;
-	}
-	
-	public Set<Pipeline> getPipelines() {
-		return pipelines;
-	}
-	
-	public Set<ConfigXml> getWorkflowLib() {
-		return workflowLib;
-	}
 }

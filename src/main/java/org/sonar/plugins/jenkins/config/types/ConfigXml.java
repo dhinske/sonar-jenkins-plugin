@@ -7,17 +7,16 @@ import org.sonar.plugins.jenkins.config.JobConfigIssue;
 import org.sonar.plugins.jenkins.config.JobType;
 import org.w3c.dom.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
- * contains all sources possible for a single job
+ * config.xml of a single job
  */
 
-public class ConfigXml extends Config{
+public class ConfigXml extends JobConfigSource{
 
 	private static final Logger LOG = LoggerFactory.getLogger(ConfigXml.class);
 

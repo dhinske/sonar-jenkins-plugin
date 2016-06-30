@@ -6,11 +6,11 @@ import java.util.List;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.plugins.jenkins.config.JobConfigIssue;
 
-public abstract class Config {
+public abstract class JobConfigSource {
 	protected InputFile inputFile;
 	protected final List<JobConfigIssue> configXmlIssues = new ArrayList<>();
 	
-	public Config(InputFile file) {
+	public JobConfigSource(InputFile file) {
 		this.inputFile = file;
 	}
 	
