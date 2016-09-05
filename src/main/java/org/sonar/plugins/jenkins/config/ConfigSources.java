@@ -39,8 +39,10 @@ public class ConfigSources {
 			
 			if (config == null) {
 				config = new JobConfig(file.file().getParentFile().getName());
-				config.setConfigXml(new ConfigXml(file));			
-				jobs.put(file.file().getParentFile().getName(), config);
+				config.setConfigXml(new ConfigXml(file));
+				if (!(config.getConfigXml().getJobType() == null)) {
+					jobs.put(file.file().getParentFile().getName(), config);					
+				}
 			} else {
 				config.setConfigXml(new ConfigXml(file));							
 			}

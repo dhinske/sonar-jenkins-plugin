@@ -110,7 +110,7 @@ public class JenkinsSensor implements Sensor {
 	private void runChecks(JobConfig jobConfig) {
 		try {
 			for (Object check : checks.all()) {
-				LOG.info(((AbstractConfigXmlCheck) check).getRuleKey() + " - " + jobConfig.getName());
+				LOG.debug(((AbstractConfigXmlCheck) check).getRuleKey() + " - " + jobConfig.getName());
 				((AbstractConfigXmlCheck) check).setRuleKey(checks.ruleKey(check));
 				((AbstractConfigXmlCheck) check).validate(jobConfig);
 			}

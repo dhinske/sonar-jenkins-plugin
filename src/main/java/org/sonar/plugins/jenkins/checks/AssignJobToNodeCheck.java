@@ -20,10 +20,23 @@ public class AssignJobToNodeCheck extends AbstractConfigXmlCheck {
 	@Override
 	public void validate(JobConfig jobConfig) {
 
-		Document document = jobConfig.getConfigXml().getDocument();
-		NodeList nodes = document.getElementsByTagName("assignedNode");
-		if (nodes.getLength() > 0) {
-			jobConfig.getConfigXml().createViolation(getRuleKey(), 1, "Every job should be assigned to a node or label.");
+		switch (jobConfig.getJobType()) {
+		case FREESTYLE:
+			Document document = jobConfig.getConfigXml().getDocument();
+			NodeList nodes = document.getElementsByTagName("assignedNode");
+			if (nodes.getLength() == 0) {
+				jobConfig.getConfigXml().createViolation(getRuleKey(), 1, "Every job should be assigned to a node or label.");
+			}
+			break;
+		case PIPELINE:
+			
+			break;
+		case MB_PIPELINE:
+			
+			break;
+		default:
+			break;
 		}
+
 	}
 }
