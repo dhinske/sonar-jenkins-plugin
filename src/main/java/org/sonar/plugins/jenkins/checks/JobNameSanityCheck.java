@@ -4,7 +4,7 @@ import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.BelongsToProfile;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.plugins.jenkins.config.types.ConfigXml;
+import org.sonar.plugins.jenkins.config.JobConfig;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
@@ -15,12 +15,10 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 public class JobNameSanityCheck extends AbstractConfigXmlCheck {
 
 	@Override
-	public void validate(ConfigXml xmlSourceCode) {
-		setJobConfigSource(xmlSourceCode);
+	public void validate(JobConfig jobConfig) {
 
-		String jobName = getJobConfigSource().getJobName();
-		if (!isJobNameValid(jobName)) {
-			createViolation(
+		if (!isJobNameValid(jobConfig.getName())) {
+			jobConfig.getConfigXml().createViolation(getRuleKey(),
 					1,
 					"Jenkins uses project names for folders related to the project. Many poorly written tools cannot handle spaces, dollar signs, or similar characters in file paths. So it's easiest to limit yourself to e.g. [a-zA-Z0-9_-]+ in project names, and use the Display Name feature to make them look nice. You can define a pattern for allowed project names in Configure Jenkins to enforce this restriction on all your users.");
 		}

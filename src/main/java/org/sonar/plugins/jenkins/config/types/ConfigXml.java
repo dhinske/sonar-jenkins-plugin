@@ -56,10 +56,6 @@ public class ConfigXml extends JobConfigSource{
 		return inputFile.file().getParentFile().getName();
 	}
 
-	public List<JobConfigIssue> getConfigIssues() {
-		return configXmlIssues;
-	}
-
 	@Override
 	public String toString() {
 		return inputFile.absolutePath();

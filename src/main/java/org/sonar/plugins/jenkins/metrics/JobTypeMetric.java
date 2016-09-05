@@ -13,7 +13,7 @@ public class JobTypeMetric implements Metrics{
     public static final Metric AMOUNT_FREESTYLE =
             new Metric.Builder(
                 "amount_freestyle",
-                "Number of Freestyle-Jobs found",
+                "Amount of Freestyle-Jobs",
                 Metric.ValueType.INT)
                 .setDescription("Number of Freestyle-Jobs found")
                 .setQualitative(false)
@@ -24,7 +24,7 @@ public class JobTypeMetric implements Metrics{
     public static final Metric AMOUNT_PIPELINE =
             new Metric.Builder(
                 "amount_pipeline",
-                "Number of Pipeline-Jobs found",
+                "Amount of Pipeline-Jobs",
                 Metric.ValueType.INT)
                 .setDescription("Number of Pipeline-Jobs found")
                 .setQualitative(false)
@@ -35,7 +35,7 @@ public class JobTypeMetric implements Metrics{
     public static final Metric AMOUNT_MB_PIPELINE =
             new Metric.Builder(
                 "amount_mb_pipeline",
-                "Number of MB-Pipeline-Jobs found",
+                "Amount of MB-Pipeline-Jobs",
                 Metric.ValueType.INT)
                 .setDescription("Number of MB-Pipeline-Jobs found")
                 .setQualitative(false)

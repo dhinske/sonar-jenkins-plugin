@@ -4,10 +4,9 @@ import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.BelongsToProfile;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.plugins.jenkins.config.types.ConfigXml;
+import org.sonar.plugins.jenkins.config.JobConfig;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 @Rule(key = "PollingCheck", name = "Polling must die!", priority = Priority.MINOR, tags = { "convention" })
@@ -17,13 +16,11 @@ import org.w3c.dom.NodeList;
 public class PollingCheck extends AbstractConfigXmlCheck {
 
 	@Override
-	public void validate(ConfigXml xmlSourceCode) {
-		setJobConfigSource(xmlSourceCode);
-		
-		Document document = getJobConfigSource().getDocument();
-		NodeList nodes = document.getElementsByTagName("hudson.triggers.SCMTrigger");
+	public void validate(JobConfig jobConfig) {
+
+		NodeList nodes = jobConfig.getConfigXml().getDocument().getElementsByTagName("hudson.triggers.SCMTrigger");
 		if (nodes.getLength() > 0) {
-			createViolation(1, "Polling must die! Please replace this with triggering.");
+			jobConfig.getConfigXml().createViolation(getRuleKey(), 1, "Polling must die! Please replace this with triggering.");
 		}
 	}
 }

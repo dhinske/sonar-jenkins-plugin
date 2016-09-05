@@ -5,18 +5,14 @@ import org.sonar.plugins.jenkins.config.types.ConfigXml;
 public class JobConfig {
 	private String name;
 	private ConfigXml configXml;
-	
-	public JobConfig() {
-		name = null;
+
+	public JobConfig(String name) {
+		this.name = name;
 		configXml = null;
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public ConfigXml getConfigXml() {
@@ -26,5 +22,4 @@ public class JobConfig {
 	public void setConfigXml(ConfigXml configXml) {
 		this.configXml = configXml;
 	}
-	
 }

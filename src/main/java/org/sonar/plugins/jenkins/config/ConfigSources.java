@@ -6,7 +6,7 @@ import org.sonar.api.batch.fs.InputFile;
 import org.sonar.plugins.jenkins.config.types.ConfigXml;
 
 /**
- * All different types of sources for a Job-configuration
+ * Manages all different types of sources for a Job-configuration of a single Jenkins
  * config.xml, pipeline, workflowLib
  */
 public class ConfigSources {
@@ -36,12 +36,17 @@ public class ConfigSources {
 		// config.xml
 		if (fileName.equals("config.xml")) {
 			JobConfig config = jobs.get(file.file().getParentFile().getName());
+			
 			if (config == null) {
-				config = new JobConfig();
+				config = new JobConfig(file.file().getParentFile().getName());
+				config.setConfigXml(new ConfigXml(file));			
+				jobs.put(file.file().getParentFile().getName(), config);
+			} else {
+				config.setConfigXml(new ConfigXml(file));							
 			}
-			config.setConfigXml(new ConfigXml(file));			
 		}
-		// Pipeline-Script
+		
+		// Pipeline-Script, currently assuming that there is no file-ending
 		if (!fileName.contains(".")) {
 			
 		}

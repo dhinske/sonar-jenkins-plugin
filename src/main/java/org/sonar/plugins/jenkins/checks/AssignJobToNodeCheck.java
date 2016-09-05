@@ -4,7 +4,7 @@ import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.BelongsToProfile;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.plugins.jenkins.config.types.ConfigXml;
+import org.sonar.plugins.jenkins.config.JobConfig;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.w3c.dom.Document;
@@ -18,13 +18,12 @@ import org.w3c.dom.NodeList;
 public class AssignJobToNodeCheck extends AbstractConfigXmlCheck {
 
 	@Override
-	public void validate(ConfigXml xmlSourceCode) {
-		setJobConfigSource(xmlSourceCode);
+	public void validate(JobConfig jobConfig) {
 
-		Document document = getJobConfigSource().getDocument();
+		Document document = jobConfig.getConfigXml().getDocument();
 		NodeList nodes = document.getElementsByTagName("assignedNode");
 		if (nodes.getLength() > 0) {
-			createViolation(1, "Every job should be assigned to a node or label.");
+			jobConfig.getConfigXml().createViolation(getRuleKey(), 1, "Every job should be assigned to a node or label.");
 		}
 	}
 }

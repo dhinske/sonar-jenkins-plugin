@@ -4,10 +4,9 @@ import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.check.BelongsToProfile;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
-import org.sonar.plugins.jenkins.config.types.ConfigXml;
+import org.sonar.plugins.jenkins.config.JobConfig;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 @Rule(key = "UseLogRotatorCheck", name = "You should use the LogRotator-Plugin", priority = Priority.MINOR, tags = {
@@ -18,13 +17,11 @@ import org.w3c.dom.NodeList;
 public class UseLogRotatorCheck extends AbstractConfigXmlCheck {
 
 	@Override
-	public void validate(ConfigXml xmlSourceCode) {
-		setJobConfigSource(xmlSourceCode);
+	public void validate(JobConfig jobConfig) {
 
-		Document document = getJobConfigSource().getDocument();
-		NodeList nodes = document.getElementsByTagName("logRotator");
+		NodeList nodes = jobConfig.getConfigXml().getDocument().getElementsByTagName("logRotator");
 		if (nodes.getLength() == 0) {
-			createViolation(1, "Please use the Logrotator to limit logs and/or artifacts!");
+			jobConfig.getConfigXml().createViolation(getRuleKey(), 1, "Please use the Logrotator to limit logs and/or artifacts!");
 		}
 	}
 }

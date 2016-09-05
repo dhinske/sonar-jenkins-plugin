@@ -62,52 +62,61 @@ public class JenkinsSensor implements Sensor {
 	@Override
 	public void analyse(Project project, SensorContext sensorContext) {
 		for (InputFile inputFile : fileSystem.inputFiles(mainFilesPredicate)) {
+			
+			// organize every config-file the Jenkins-instance has
 			configSources.addSource(inputFile);
-			System.out.println("analyse " + inputFile.file().getAbsolutePath());
-//			JobConfigSources source = new JobConfigSources(inputFile);
-//			JobType type = source.getJobType();
-//			System.out.println("GOT TYPE: " + type.name());
-//			switch (type) {
-//			case FREESTYLE:
-//				freestyleJobs++;
-//				break;
-//			case PIPELINE:
-//				pipelineJobs++;
-//				break;
-//			case MB_PIPELINE:
-//				mbPipelineJobs++;
-//				break;
-//			default:
-//				break;
-//			}
+			LOG.info("analyse " + inputFile.file().getAbsolutePath());
 			
 			//runChecks(source);
 		}
-		for (JobConfig config : configSources.getJobs().values()) {
-			runChecks(config.getConfigXml());
+
+		for (JobConfig jobConfig : configSources.getJobs().values()) {
+			JobType type = jobConfig.getConfigXml().getJobType();
+			if (type == null) {
+				LOG.info("Could not get JobType for " + jobConfig.getName());
+			} else {
+				switch (type) {
+				case FREESTYLE:
+					freestyleJobs++;
+					break;
+				case PIPELINE:
+					pipelineJobs++;
+					break;
+				case MB_PIPELINE:
+					mbPipelineJobs++;
+					break;
+				default:
+					break;
+				}	
+			}
 		}
-//		Measure measure;
-//		measure = new Measure(JobTypeMetric.AMOUNT_FREESTYLE);
-//		measure.setValue(freestyleJobs);
-//	    sensorContext.saveMeasure(measure);
-//		measure = new Measure(JobTypeMetric.AMOUNT_PIPELINE);
-//		measure.setValue(pipelineJobs);
-//	    sensorContext.saveMeasure(measure);
-//		measure = new Measure(JobTypeMetric.AMOUNT_MB_PIPELINE);
-//		measure.setValue(mbPipelineJobs);
-//	    sensorContext.saveMeasure(measure);
+		
+		for (JobConfig config : configSources.getJobs().values()) {
+			runChecks(config);
+		}
+		
+		Measure measure;
+		measure = new Measure(JobTypeMetric.AMOUNT_FREESTYLE);
+		measure.setValue(freestyleJobs);
+	    sensorContext.saveMeasure(measure);
+		measure = new Measure(JobTypeMetric.AMOUNT_PIPELINE);
+		measure.setValue(pipelineJobs);
+	    sensorContext.saveMeasure(measure);
+		measure = new Measure(JobTypeMetric.AMOUNT_MB_PIPELINE);
+		measure.setValue(mbPipelineJobs);
+	    sensorContext.saveMeasure(measure);
 	}
 
-	private void runChecks(ConfigXml source) {
+	private void runChecks(JobConfig jobConfig) {
 		try {
 			for (Object check : checks.all()) {
-				LOG.info(((AbstractConfigXmlCheck) check).getRuleKey() + " - " + source.getInputFile().absolutePath());
+				LOG.info(((AbstractConfigXmlCheck) check).getRuleKey() + " - " + jobConfig.getName());
 				((AbstractConfigXmlCheck) check).setRuleKey(checks.ruleKey(check));
-				((AbstractConfigXmlCheck) check).validate(source);
+				((AbstractConfigXmlCheck) check).validate(jobConfig);
 			}
-			saveIssue(source);
+			saveIssue(jobConfig);
 		} catch (Exception e) {
-			throw new IllegalStateException("Could not analyze the file " + source.getInputFile().absolutePath(), e);
+			throw new IllegalStateException("Could not analyze the file " + jobConfig.getName(), e);
 		}
 	}
 
@@ -121,9 +130,9 @@ public class JenkinsSensor implements Sensor {
 	}
 
 	@VisibleForTesting
-	protected void saveIssue(ConfigXml sourceCode) {
-		for (JobConfigIssue xmlIssue : sourceCode.getConfigIssues()) {
-			Issuable issuable = resourcePerspectives.as(Issuable.class, sourceCode.getInputFile());
+	protected void saveIssue(JobConfig jobConfig) {
+		for (JobConfigIssue xmlIssue : jobConfig.getConfigXml().getConfigIssues()) {
+			Issuable issuable = resourcePerspectives.as(Issuable.class, jobConfig.getConfigXml().getInputFile());
 
 			if (issuable != null) {
 				issuable.addIssue(issuable.newIssueBuilder().ruleKey(xmlIssue.getRuleKey()).line(xmlIssue.getLine())
@@ -141,5 +150,4 @@ public class JenkinsSensor implements Sensor {
 	public String toString() {
 		return getClass().getSimpleName();
 	}
-
 }

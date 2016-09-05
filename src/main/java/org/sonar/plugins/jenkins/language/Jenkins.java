@@ -4,16 +4,16 @@ import org.sonar.api.resources.AbstractLanguage;
 
 public class Jenkins extends AbstractLanguage {
 
-  public static final String KEY = "jenkins";
+	public static final String KEY = "jenkins";
 
-  private static final String JENKINS_LANGUAGE_NAME = "jenkins";
+	private static final String JENKINS_LANGUAGE_NAME = "jenkins";
 
-  public Jenkins() {
-    super(KEY, JENKINS_LANGUAGE_NAME);
-  }
+	public Jenkins() {
+		super(KEY, JENKINS_LANGUAGE_NAME);
+	}
 
-  @Override
-  public String[] getFileSuffixes() {
-    return new String[] {};
-  }
+	@Override
+	public String[] getFileSuffixes() {
+		return new String[] {};
+	}
 }
