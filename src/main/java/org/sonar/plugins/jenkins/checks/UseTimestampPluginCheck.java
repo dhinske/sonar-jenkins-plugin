@@ -15,7 +15,7 @@ import org.w3c.dom.NodeList;
 @BelongsToProfile(title = CheckRepository.SONAR_WAY_PROFILE_NAME, priority = Priority.INFO)
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
 @SqaleConstantRemediation("1min")
-public class UseTimestampPlugin extends AbstractConfigXmlCheck {
+public class UseTimestampPluginCheck extends AbstractConfigXmlCheck {
 
 	@Override
 	public void validate(JobConfig jobConfig) {
