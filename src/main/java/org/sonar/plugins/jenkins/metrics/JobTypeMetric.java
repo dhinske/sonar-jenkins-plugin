@@ -58,7 +58,7 @@ public class JobTypeMetric implements Metrics{
 	    sensorContext.saveMeasure(measure);
 	}
 	
-    public static final Metric AMOUNT_FREESTYLE =
+	private static final Metric AMOUNT_FREESTYLE =
             new Metric.Builder(
                 "amount_freestyle",
                 "Amount of Freestyle-Jobs",
@@ -69,7 +69,7 @@ public class JobTypeMetric implements Metrics{
                 .setFormula(new SumChildValuesFormula(false))
                 .create();
     
-    public static final Metric AMOUNT_PIPELINE =
+    private static final Metric AMOUNT_PIPELINE =
             new Metric.Builder(
                 "amount_pipeline",
                 "Amount of Pipeline-Jobs",
@@ -80,7 +80,7 @@ public class JobTypeMetric implements Metrics{
                 .setFormula(new SumChildValuesFormula(false))
                 .create();
     
-    public static final Metric AMOUNT_MB_PIPELINE =
+    private static final Metric AMOUNT_MB_PIPELINE =
             new Metric.Builder(
                 "amount_mb_pipeline",
                 "Amount of MB-Pipeline-Jobs",

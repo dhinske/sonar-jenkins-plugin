@@ -10,12 +10,12 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-@Rule(key = "AssignJobToNodeCheck", name = "Every job should be assigned to a node or label", priority = Priority.MINOR, tags = {
+@Rule(key = "UseTimestampPlugin", name = "You should use the Timestamp-Plugin", priority = Priority.INFO, tags = {
 		"convention" })
-@BelongsToProfile(title = CheckRepository.SONAR_WAY_PROFILE_NAME, priority = Priority.MAJOR)
-@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.MAINTAINABILITY_COMPLIANCE)
-@SqaleConstantRemediation("5min")
-public class AssignJobToNodeCheck extends AbstractConfigXmlCheck {
+@BelongsToProfile(title = CheckRepository.SONAR_WAY_PROFILE_NAME, priority = Priority.INFO)
+@SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
+@SqaleConstantRemediation("1min")
+public class UseTimestampPlugin extends AbstractConfigXmlCheck {
 
 	@Override
 	public void validate(JobConfig jobConfig) {
@@ -23,9 +23,9 @@ public class AssignJobToNodeCheck extends AbstractConfigXmlCheck {
 		switch (jobConfig.getJobType()) {
 		case FREESTYLE:
 			Document document = jobConfig.getConfigXml().getDocument();
-			NodeList nodes = document.getElementsByTagName("assignedNode");
-			if (nodes.getLength() > 0) {
-				jobConfig.getConfigXml().createViolation(getRuleKey(), 1, "Every job should be assigned to a node or label.");
+			NodeList nodes = document.getElementsByTagName("hudson.plugins.timestamper.TimestamperBuildWrapper");
+			if (nodes.getLength() == 0) {
+				jobConfig.getConfigXml().createViolation(getRuleKey(), 1, "Every job should use the Timestamper-Plugin.");
 			}
 			break;
 		case PIPELINE:

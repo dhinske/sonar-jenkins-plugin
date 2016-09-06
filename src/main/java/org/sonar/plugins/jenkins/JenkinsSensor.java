@@ -52,12 +52,9 @@ public class JenkinsSensor implements Sensor {
 	@Override
 	public void analyse(Project project, SensorContext sensorContext) {
 		for (InputFile inputFile : fileSystem.inputFiles(mainFilesPredicate)) {
-			
 			// organize every config-file the Jenkins-instance has
 			configSources.addSource(inputFile);
 			LOG.debug("analyse " + inputFile.file().getAbsolutePath());
-			
-			//runChecks(source);
 		}
 		
 		// run metrics

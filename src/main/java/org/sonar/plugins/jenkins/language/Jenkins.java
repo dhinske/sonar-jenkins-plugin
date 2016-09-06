@@ -6,7 +6,7 @@ public class Jenkins extends AbstractLanguage {
 
 	public static final String KEY = "jenkins";
 
-	private static final String JENKINS_LANGUAGE_NAME = "jenkins";
+	private static final String JENKINS_LANGUAGE_NAME = "Jenkins";
 
 	public Jenkins() {
 		super(KEY, JENKINS_LANGUAGE_NAME);
