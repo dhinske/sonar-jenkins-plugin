@@ -14,16 +14,12 @@ import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.component.Perspective;
 import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.issue.Issuable;
-import org.sonar.api.measures.Measure;
 import org.sonar.api.resources.Project;
 import org.sonar.plugins.jenkins.checks.AbstractConfigXmlCheck;
 import org.sonar.plugins.jenkins.checks.CheckRepository;
 import org.sonar.plugins.jenkins.config.ConfigSources;
 import org.sonar.plugins.jenkins.config.JobConfig;
 import org.sonar.plugins.jenkins.config.JobConfigIssue;
-import org.sonar.plugins.jenkins.config.JobType;
-import org.sonar.plugins.jenkins.config.types.JobConfigSource;
-import org.sonar.plugins.jenkins.config.types.ConfigXml;
 import org.sonar.plugins.jenkins.language.Jenkins;
 import org.sonar.plugins.jenkins.metrics.JobTypeMetric;
 
@@ -38,9 +34,6 @@ public class JenkinsSensor implements Sensor {
 	private static final Logger LOG = LoggerFactory.getLogger(JenkinsSensor.class);
 	
 	private ConfigSources configSources;
-	private double freestyleJobs;
-	private double pipelineJobs;
-	private double mbPipelineJobs;
 
 	public JenkinsSensor(FileSystem fileSystem, ResourcePerspectives resourcePerspectives, CheckFactory checkFactory) {
 		this.checks = checkFactory.create(CheckRepository.REPOSITORY_KEY)
@@ -51,9 +44,6 @@ public class JenkinsSensor implements Sensor {
 				fileSystem.predicates().hasLanguage(Jenkins.KEY));
 		
 		configSources = new ConfigSources();
-		freestyleJobs = 0;
-		pipelineJobs = 0;
-		mbPipelineJobs = 0;
 	}
 
 	/**
@@ -65,46 +55,18 @@ public class JenkinsSensor implements Sensor {
 			
 			// organize every config-file the Jenkins-instance has
 			configSources.addSource(inputFile);
-			LOG.info("analyse " + inputFile.file().getAbsolutePath());
+			LOG.debug("analyse " + inputFile.file().getAbsolutePath());
 			
 			//runChecks(source);
 		}
-
-		for (JobConfig jobConfig : configSources.getJobs().values()) {
-			JobType type = jobConfig.getConfigXml().getJobType();
-			if (type == null) {
-				LOG.info("Could not get JobType for " + jobConfig.getName());
-			} else {
-				switch (type) {
-				case FREESTYLE:
-					freestyleJobs++;
-					break;
-				case PIPELINE:
-					pipelineJobs++;
-					break;
-				case MB_PIPELINE:
-					mbPipelineJobs++;
-					break;
-				default:
-					break;
-				}	
-			}
-		}
 		
+		// run metrics
+		JobTypeMetric.calculateMetric(configSources, sensorContext);
+		
+		// run checks
 		for (JobConfig config : configSources.getJobs().values()) {
 			runChecks(config);
 		}
-		
-		Measure measure;
-		measure = new Measure(JobTypeMetric.AMOUNT_FREESTYLE);
-		measure.setValue(freestyleJobs);
-	    sensorContext.saveMeasure(measure);
-		measure = new Measure(JobTypeMetric.AMOUNT_PIPELINE);
-		measure.setValue(pipelineJobs);
-	    sensorContext.saveMeasure(measure);
-		measure = new Measure(JobTypeMetric.AMOUNT_MB_PIPELINE);
-		measure.setValue(mbPipelineJobs);
-	    sensorContext.saveMeasure(measure);
 	}
 
 	private void runChecks(JobConfig jobConfig) {
