@@ -19,6 +19,14 @@ public abstract class JobConfigSource {
 		this.configXmlIssues.add(issue);
 	}
 	
+	public InputFile getInputFile() {
+		return inputFile;
+	}
+
+	public void setInputFile(InputFile inputFile) {
+		this.inputFile = inputFile;
+	}
+
 	public List<JobConfigIssue> getConfigIssues() {
 		return configXmlIssues;
 	}

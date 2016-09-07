@@ -32,12 +32,15 @@ public class JobTypeMetric implements Metrics{
 			} else {
 				switch (type) {
 				case FREESTYLE:
+					sensorContext.saveMeasure(jobConfig.getConfigXml().getInputFile(), AMOUNT_FREESTYLE, 1.0);
 					freestyleJobs++;
 					break;
 				case PIPELINE:
+					sensorContext.saveMeasure(jobConfig.getConfigXml().getInputFile(), AMOUNT_PIPELINE, 1.0);
 					pipelineJobs++;
 					break;
 				case MB_PIPELINE:
+					sensorContext.saveMeasure(jobConfig.getConfigXml().getInputFile(), AMOUNT_MB_PIPELINE, 1.0);
 					mbPipelineJobs++;
 					break;
 				default:
