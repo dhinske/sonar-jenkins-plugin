@@ -21,6 +21,7 @@ import org.sonar.plugins.jenkins.config.ConfigSources;
 import org.sonar.plugins.jenkins.config.JobConfig;
 import org.sonar.plugins.jenkins.config.JobConfigIssue;
 import org.sonar.plugins.jenkins.language.Jenkins;
+import org.sonar.plugins.jenkins.metrics.ComplexityMetric;
 import org.sonar.plugins.jenkins.metrics.JobTypeMetric;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -59,6 +60,7 @@ public class JenkinsSensor implements Sensor {
 		
 		// run metrics
 		JobTypeMetric.calculateMetric(configSources, sensorContext);
+		ComplexityMetric.calculateMetric(configSources, sensorContext);
 		
 		// run checks
 		for (JobConfig config : configSources.getJobs().values()) {

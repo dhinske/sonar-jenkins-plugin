@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 
 import org.sonar.api.SonarPlugin;
 import org.sonar.plugins.jenkins.language.Jenkins;
+import org.sonar.plugins.jenkins.metrics.ComplexityMetric;
 import org.sonar.plugins.jenkins.metrics.JobTypeMetric;
 import org.sonar.plugins.jenkins.rules.ConfigXmlRulesDefinition;
 import org.sonar.plugins.jenkins.rules.ConfigXmlSonarWayProfile;
@@ -17,6 +18,6 @@ public final class JenkinsPlugin extends SonarPlugin {
 	@Override
 	public List getExtensions() {
 		return ImmutableList.of(Jenkins.class, ConfigXmlRulesDefinition.class, ConfigXmlSonarWayProfile.class,
-				JenkinsSensor.class, JobTypeMetric.class);
+				JenkinsSensor.class, JobTypeMetric.class, ComplexityMetric.class);
 	}
 }
