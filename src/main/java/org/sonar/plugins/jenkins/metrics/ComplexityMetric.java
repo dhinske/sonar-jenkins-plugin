@@ -67,7 +67,7 @@ public class ComplexityMetric implements Metrics{
 	    sensorContext.saveMeasure(measure);
 	}
 	
-	private static final Metric COMPLEXITY_JOBS =
+	static final Metric COMPLEXITY_JOBS =
             new Metric.Builder(
                 "complexity_jobs",
                 "Complexity of all jobs",
@@ -83,22 +83,4 @@ public class ComplexityMetric implements Metrics{
 	public List<Metric> getMetrics() {
 		return Arrays.asList(COMPLEXITY_JOBS);
 	}
-	
-	public static void main(String[] args) {
-		DefaultInputFile inputFile = new DefaultInputFile("");
-		inputFile.setFile(new File("src/test/resources/assigned_config.xml"));
-		JobConfig config = new JobConfig("Test");
-		config.setConfigXml(new ConfigXml(inputFile));
-		
-		NodeList nodes = config.getConfigXml().getDocument().getElementsByTagName("builders");
-		for(int i = 0 ; i < nodes.item(0).getChildNodes().getLength() ; i++) {
-			if(nodes.item(0).getChildNodes().item(i).getNodeType()==1) {
-				System.out.println(nodes.item(0).getChildNodes().item(i));
-				
-			}
-		}
-		
-		System.out.println(nodes.item(0).getChildNodes().getLength());
-	}
-
 }
