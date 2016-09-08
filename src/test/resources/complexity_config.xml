@@ -5,7 +5,6 @@
 	<keepDependencies>false</keepDependencies>
 	<properties>
 		<hudson.security.AuthorizationMatrixProperty>
-
 		</hudson.security.AuthorizationMatrixProperty>
 		<com.sonyericsson.jenkins.plugins.bfa.model.ScannerJobProperty
 			plugin="build-failure-analyzer@1.3.0">
@@ -28,7 +27,6 @@
 	<scm class="hudson.scm.SubversionSCM" plugin="subversion@2.4.5">
 		<locations>
 			<hudson.scm.SubversionSCM_-ModuleLocation>
-
 			</hudson.scm.SubversionSCM_-ModuleLocation>
 		</locations>
 		<excludedRegions></excludedRegions>
@@ -56,12 +54,64 @@
 	<concurrentBuild>false</concurrentBuild>
 	<builders>
 		<hudson.tasks.Maven>
-			<targets>clean deploy</targets>
+			<targets>verify</targets>
 			<mavenName>Maven 3.1.1</mavenName>
+			<pom>pom.xml</pom>
 			<usePrivateRepository>false</usePrivateRepository>
 			<settings class="jenkins.mvn.DefaultSettingsProvider" />
 			<globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider" />
 		</hudson.tasks.Maven>
+		<hudson.plugins.groovy.Groovy plugin="groovy@1.13">
+			<scriptSource class="hudson.plugins.groovy.StringScriptSource">
+				<command>
+					println "doStuff"
+				</command>
+			</scriptSource>
+			<groovyName>Groovy 2.1.3</groovyName>
+			<parameters />
+			<scriptParameters />
+			<properties />
+			<javaOpts />
+			<classPath>C:\groovy_scripts</classPath>
+		</hudson.plugins.groovy.Groovy>
+		<hudson.plugins.parameterizedtrigger.TriggerBuilder
+			plugin="parameterized-trigger@2.26">
+			<configs>
+				<hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+					<configs>
+						<hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+							<properties>
+								PROPA=VALUEA
+							</properties>
+						</hudson.plugins.parameterizedtrigger.PredefinedBuildParameters>
+					</configs>
+					<projects>triggeredProject</projects>
+					<condition>ALWAYS</condition>
+					<triggerWithNoParameters>false</triggerWithNoParameters>
+					<block>
+						<buildStepFailureThreshold>
+							<name>FAILURE</name>
+							<ordinal>2</ordinal>
+							<color>RED</color>
+							<completeBuild>true</completeBuild>
+						</buildStepFailureThreshold>
+						<unstableThreshold>
+							<name>UNSTABLE</name>
+							<ordinal>1</ordinal>
+							<color>YELLOW</color>
+							<completeBuild>true</completeBuild>
+						</unstableThreshold>
+						<failureThreshold>
+							<name>FAILURE</name>
+							<ordinal>2</ordinal>
+							<color>RED</color>
+							<completeBuild>true</completeBuild>
+						</failureThreshold>
+					</block>
+					<buildAllNodesWithLabel>false</buildAllNodesWithLabel>
+				</hudson.plugins.parameterizedtrigger.BlockableBuildTriggerConfig>
+			</configs>
+		</hudson.plugins.parameterizedtrigger.TriggerBuilder>
 	</builders>
 	<publishers>
 		<hudson.plugins.emailext.ExtendedEmailPublisher
@@ -117,5 +167,7 @@
 	</publishers>
 	<buildWrappers>
 		<com.michelin.cio.hudson.plugins.maskpasswords.MaskPasswordsBuildWrapper />
+		<hudson.plugins.timestamper.TimestamperBuildWrapper
+			plugin="timestamper@1.5.3" />
 	</buildWrappers>
 </project>

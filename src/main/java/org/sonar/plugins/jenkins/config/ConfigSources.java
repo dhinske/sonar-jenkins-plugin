@@ -57,4 +57,8 @@ public class ConfigSources {
 		// TODO: additional groovy-scripts
 	}
 	
+	public void addJob(JobConfig jobConfig) {
+		jobs.put(jobConfig.getName(), jobConfig);
+	}
+	
 }

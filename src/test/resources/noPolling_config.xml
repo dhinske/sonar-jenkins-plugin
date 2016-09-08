@@ -1,131 +1,153 @@
-<?xml version="1.0" encoding="UTF-8"?><project>
-  <actions/>
-  <description/>
-  <displayName>personal2_AdDTO</displayName>
-  <logRotator class="hudson.tasks.LogRotator">
-    <daysToKeep>-1</daysToKeep>
-    <numToKeep>20</numToKeep>
-    <artifactDaysToKeep>-1</artifactDaysToKeep>
-    <artifactNumToKeep>-1</artifactNumToKeep>
-  </logRotator>
-  <keepDependencies>false</keepDependencies>
-  <properties>
-    <com.sonyericsson.jenkins.plugins.bfa.model.ScannerJobProperty plugin="build-failure-analyzer@1.3.0">
-      <doNotScan>false</doNotScan>
-    </com.sonyericsson.jenkins.plugins.bfa.model.ScannerJobProperty>
-    <hudson.model.ParametersDefinitionProperty>
-      <parameterDefinitions>
-        <hudson.model.StringParameterDefinition>
-          <name>releaseVersion</name>
-          <description>The version you are about to release, typically the version that in stated in your pom.xml whithout the SNAPSHOT suffix.
-So if your pom.xml states 1.1.0-SNAPSHOT your releaseVersion would be 1.1.0</description>
-          <defaultValue/>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>developmentVersion</name>
-          <description>The version that will be the current for your next development iteration. 
-If you are releasing version 1.1.0 the developmentVersion could be e.g. 1.2.0-SNAPSHOT</description>
-          <defaultValue/>
-        </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>branch</name>
-          <description>If you are doing are regular release the default (pre-release) will be fine.
-If you are doing a hotfix-release you will have to enter your current release branch here, e.g. release-1.1.0</description>
-          <defaultValue>pre-release</defaultValue>
-        </hudson.model.StringParameterDefinition>
-      </parameterDefinitions>
-    </hudson.model.ParametersDefinitionProperty>
-    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.22">
-      <autoRebuild>false</autoRebuild>
-    </com.sonyericsson.rebuild.RebuildSettings>
-    <hudson.plugins.throttleconcurrents.ThrottleJobProperty plugin="throttle-concurrents@1.8.4">
-      <maxConcurrentPerNode>0</maxConcurrentPerNode>
-      <maxConcurrentTotal>0</maxConcurrentTotal>
-      <categories/>
-      <throttleEnabled>false</throttleEnabled>
-      <throttleOption>project</throttleOption>
-      <configVersion>1</configVersion>
-    </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
-    <hudson.security.AuthorizationMatrixProperty><permission>hudson.model.Item.Cancel:General.Accounts.Server-Development</permission><permission>hudson.model.Item.ViewStatus:General.Accounts.Server-Development</permission><permission>hudson.model.Item.Build:General.Accounts.Server-Development</permission><permission>hudson.model.Item.Read:General.Accounts.Server-Development</permission><permission>hudson.model.Item.Workspace:General.Accounts.Server-Development</permission><permission>hudson.model.Item.Configure:General.Accounts.Server-Development</permission><permission>hudson.model.Item.Discover:General.Accounts.Server-Development</permission><permission>hudson.model.Item.Release:General.Accounts.Server-Development</permission><permission>hudson.model.Item.Cancel:General.Accounts.Marketing-Technology</permission><permission>hudson.model.Item.ViewStatus:General.Accounts.Marketing-Technology</permission><permission>hudson.model.Item.Build:General.Accounts.Marketing-Technology</permission><permission>hudson.model.Item.Read:General.Accounts.Marketing-Technology</permission><permission>hudson.model.Item.Workspace:General.Accounts.Marketing-Technology</permission><permission>hudson.model.Item.Configure:General.Accounts.Marketing-Technology</permission><permission>hudson.model.Item.Discover:General.Accounts.Marketing-Technology</permission><permission>hudson.model.Item.Release:General.Accounts.Marketing-Technology</permission></hudson.security.AuthorizationMatrixProperty></properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.2.7">
-    <configVersion>2</configVersion>
-    <userRemoteConfigs>
-      <hudson.plugins.git.UserRemoteConfig>
-        <url>git@source.services.ggs-net.com:martec/addto.git</url>
-        <credentialsId>cc8a8734-03ba-4bf7-80f5-07a8d40e34ba</credentialsId>
-      </hudson.plugins.git.UserRemoteConfig>
-    </userRemoteConfigs>
-    <branches>
-      <hudson.plugins.git.BranchSpec>
-        <name>*/${branch}</name>
-      </hudson.plugins.git.BranchSpec>
-    </branches>
-    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
-    <gitTool>Default</gitTool>
-    <submoduleCfg class="list"/>
-    <extensions>
-      <hudson.plugins.git.extensions.impl.LocalBranch>
-        <localBranch>${branch}</localBranch>
-      </hudson.plugins.git.extensions.impl.LocalBranch>
-    </extensions>
-  </scm>
-  <assignedNode>Java_Slave_2||Java_Slave_1</assignedNode>
-  <canRoam>false</canRoam>
-  <disabled>false</disabled>
-  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
-  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <jdk>Java8</jdk>
-  <triggers/>
-  <concurrentBuild>true</concurrentBuild>
-  <builders>
-    <hudson.tasks.Maven>
-      <targets>clean
-release:prepare
--DcheckModificationExcludeList=pom.xml.releaseBackup,pom.xml.versionsBackup
--DscmCommentPrefix="#release releaseVersion "
--DreleaseVersion=${releaseVersion}
--DdevelopmentVersion=${developmentVersion}
--Dtag=release-tag-${releaseVersion}
-release:perform
--Dquiet=true</targets>
-      <mavenName>Maven 3.1.1</mavenName>
-      <usePrivateRepository>false</usePrivateRepository>
-      <settings class="jenkins.mvn.FilePathSettingsProvider">
-        <path>/home/jenkins/jenkins_misc/settings.xml</path>
-      </settings>
-      <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
-    </hudson.tasks.Maven>
-    <hudson.tasks.Maven>
-      <targets>clean install</targets>
-      <mavenName>Maven 3.1.1</mavenName>
-      <usePrivateRepository>false</usePrivateRepository>
-      <settings class="jenkins.mvn.DefaultSettingsProvider"/>
-      <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
-    </hudson.tasks.Maven>
-  </builders>
-  <publishers>
-    <hudson.plugins.chucknorris.CordellWalkerRecorder plugin="chucknorris@0.4">
-      <factGenerator/>
-    </hudson.plugins.chucknorris.CordellWalkerRecorder>
-    <hudson.plugins.parameterizedtrigger.BuildTrigger plugin="parameterized-trigger@2.26">
-      <configs>
-        <hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-          <configs>
-            <hudson.plugins.parameterizedtrigger.CurrentBuildParameters/>
-          </configs>
-          <projects>server_martec_Analytics_release</projects>
-          <condition>SUCCESS</condition>
-          <triggerWithNoParameters>false</triggerWithNoParameters>
-        </hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
-      </configs>
-    </hudson.plugins.parameterizedtrigger.BuildTrigger>
-  </publishers>
-  <buildWrappers>
-<com.michelin.cio.hudson.plugins.maskpasswords.MaskPasswordsBuildWrapper/>
-    <hudson.plugins.ws__cleanup.PreBuildCleanup plugin="ws-cleanup@0.24">
-      <deleteDirs>false</deleteDirs>
-      <cleanupParameter/>
-      <externalDelete/>
-    </hudson.plugins.ws__cleanup.PreBuildCleanup>
-  </buildWrappers>
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<actions />
+	<description />
+	<displayName>personal2_AdDTO</displayName>
+	<logRotator class="hudson.tasks.LogRotator">
+		<daysToKeep>-1</daysToKeep>
+		<numToKeep>20</numToKeep>
+		<artifactDaysToKeep>-1</artifactDaysToKeep>
+		<artifactNumToKeep>-1</artifactNumToKeep>
+	</logRotator>
+	<keepDependencies>false</keepDependencies>
+	<properties>
+		<com.sonyericsson.jenkins.plugins.bfa.model.ScannerJobProperty
+			plugin="build-failure-analyzer@1.3.0">
+			<doNotScan>false</doNotScan>
+		</com.sonyericsson.jenkins.plugins.bfa.model.ScannerJobProperty>
+		<hudson.model.ParametersDefinitionProperty>
+			<parameterDefinitions>
+				<hudson.model.StringParameterDefinition>
+					<name>releaseVersion</name>
+					<description>The version you are about to release, typically the
+						version that in stated in your pom.xml whithout the SNAPSHOT
+						suffix.
+						So if your pom.xml states 1.1.0-SNAPSHOT your
+						releaseVersion would be 1.1.0
+					</description>
+					<defaultValue />
+				</hudson.model.StringParameterDefinition>
+				<hudson.model.StringParameterDefinition>
+					<name>developmentVersion</name>
+					<description>The version that will be the current for your next
+						development iteration.
+						If you are releasing version 1.1.0 the
+						developmentVersion could be e.g. 1.2.0-SNAPSHOT
+					</description>
+					<defaultValue />
+				</hudson.model.StringParameterDefinition>
+				<hudson.model.StringParameterDefinition>
+					<name>branch</name>
+					<description>If you are doing are regular release the default
+						(pre-release) will be fine.
+						If you are doing a hotfix-release you
+						will have to enter your
+						current release branch here, e.g.
+						release-1.1.0
+					</description>
+					<defaultValue>pre-release</defaultValue>
+				</hudson.model.StringParameterDefinition>
+			</parameterDefinitions>
+		</hudson.model.ParametersDefinitionProperty>
+		<com.sonyericsson.rebuild.RebuildSettings
+			plugin="rebuild@1.22">
+			<autoRebuild>false</autoRebuild>
+		</com.sonyericsson.rebuild.RebuildSettings>
+		<hudson.plugins.throttleconcurrents.ThrottleJobProperty
+			plugin="throttle-concurrents@1.8.4">
+			<maxConcurrentPerNode>0</maxConcurrentPerNode>
+			<maxConcurrentTotal>0</maxConcurrentTotal>
+			<categories />
+			<throttleEnabled>false</throttleEnabled>
+			<throttleOption>project</throttleOption>
+			<configVersion>1</configVersion>
+		</hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+		<hudson.security.AuthorizationMatrixProperty>
+		</hudson.security.AuthorizationMatrixProperty>
+	</properties>
+	<scm class="hudson.plugins.git.GitSCM" plugin="git@2.2.7">
+		<configVersion>2</configVersion>
+		<userRemoteConfigs>
+			<hudson.plugins.git.UserRemoteConfig>
+			</hudson.plugins.git.UserRemoteConfig>
+		</userRemoteConfigs>
+		<branches>
+			<hudson.plugins.git.BranchSpec>
+				<name>*/${branch}</name>
+			</hudson.plugins.git.BranchSpec>
+		</branches>
+		<doGenerateSubmoduleConfigurations>false
+		</doGenerateSubmoduleConfigurations>
+		<gitTool>Default</gitTool>
+		<submoduleCfg class="list" />
+		<extensions>
+			<hudson.plugins.git.extensions.impl.LocalBranch>
+				<localBranch>${branch}</localBranch>
+			</hudson.plugins.git.extensions.impl.LocalBranch>
+		</extensions>
+	</scm>
+	<assignedNode>slave01</assignedNode>
+	<canRoam>false</canRoam>
+	<disabled>false</disabled>
+	<blockBuildWhenDownstreamBuilding>false
+	</blockBuildWhenDownstreamBuilding>
+	<blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+	<jdk>Java8</jdk>
+	<triggers />
+	<concurrentBuild>true</concurrentBuild>
+	<builders>
+		<hudson.tasks.Maven>
+			<targets>clean
+				release:prepare
+				-DcheckModificationExcludeList=pom.xml.releaseBackup,pom.xml.versionsBackup
+				-DscmCommentPrefix="#release releaseVersion "
+				-DreleaseVersion=${releaseVersion}
+				-DdevelopmentVersion=${developmentVersion}
+				-Dtag=release-tag-${releaseVersion}
+				release:perform
+				-Dquiet=true
+			</targets>
+			<mavenName>Maven 3.1.1</mavenName>
+			<usePrivateRepository>false</usePrivateRepository>
+			<settings class="jenkins.mvn.FilePathSettingsProvider">
+				<path>/home/jenkins/jenkins_misc/settings.xml</path>
+			</settings>
+			<globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider" />
+		</hudson.tasks.Maven>
+		<hudson.tasks.Maven>
+			<targets>clean install</targets>
+			<mavenName>Maven 3.1.1</mavenName>
+			<usePrivateRepository>false</usePrivateRepository>
+			<settings class="jenkins.mvn.DefaultSettingsProvider" />
+			<globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider" />
+		</hudson.tasks.Maven>
+	</builders>
+	<publishers>
+		<hudson.plugins.chucknorris.CordellWalkerRecorder
+			plugin="chucknorris@0.4">
+			<factGenerator />
+		</hudson.plugins.chucknorris.CordellWalkerRecorder>
+		<hudson.plugins.parameterizedtrigger.BuildTrigger
+			plugin="parameterized-trigger@2.26">
+			<configs>
+				<hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+					<configs>
+						<hudson.plugins.parameterizedtrigger.CurrentBuildParameters />
+					</configs>
+					<projects>server_martec_Analytics_release</projects>
+					<condition>SUCCESS</condition>
+					<triggerWithNoParameters>false</triggerWithNoParameters>
+				</hudson.plugins.parameterizedtrigger.BuildTriggerConfig>
+			</configs>
+		</hudson.plugins.parameterizedtrigger.BuildTrigger>
+	</publishers>
+	<buildWrappers>
+		<com.michelin.cio.hudson.plugins.maskpasswords.MaskPasswordsBuildWrapper />
+		<hudson.plugins.ws__cleanup.PreBuildCleanup
+			plugin="ws-cleanup@0.24">
+			<deleteDirs>false</deleteDirs>
+			<cleanupParameter />
+			<externalDelete />
+		</hudson.plugins.ws__cleanup.PreBuildCleanup>
+	</buildWrappers>
 </project>
