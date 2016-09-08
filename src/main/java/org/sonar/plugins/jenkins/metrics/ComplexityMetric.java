@@ -1,13 +1,11 @@
 package org.sonar.plugins.jenkins.metrics;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.SensorContext;
-import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
@@ -16,8 +14,6 @@ import org.sonar.api.measures.SumChildValuesFormula;
 import org.sonar.plugins.jenkins.config.ConfigSources;
 import org.sonar.plugins.jenkins.config.JobConfig;
 import org.sonar.plugins.jenkins.config.JobType;
-import org.sonar.plugins.jenkins.config.types.ConfigXml;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class ComplexityMetric implements Metrics{

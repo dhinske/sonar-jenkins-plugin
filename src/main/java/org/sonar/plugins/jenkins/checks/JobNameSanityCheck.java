@@ -8,7 +8,12 @@ import org.sonar.plugins.jenkins.config.JobConfig;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
-@Rule(key = "JobNameSanityCheck", name = "limit yourself to e.g. [a-zA-Z0-9_-]+ in project names, and use the Display Name feature to make them look nice.!", priority = Priority.MAJOR, tags = { "convention" })
+/**
+ * Checks the name of the job for special characters. Some plugins have trouble with special characters in the job-name.
+ * @author dhinske
+ *
+ */
+@Rule(key = "JobNameSanityCheck", name = "Sanitize your job-names", priority = Priority.MAJOR, tags = { "convention" })
 @BelongsToProfile(title = CheckRepository.SONAR_WAY_PROFILE_NAME, priority = Priority.MAJOR)
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.ARCHITECTURE_RELIABILITY)
 @SqaleConstantRemediation("5min")

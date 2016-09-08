@@ -15,6 +15,5 @@ public abstract class AbstractConfigXmlCheck {
 		return ruleKey;
 	}
 
-
 	public abstract void validate(JobConfig JobConfigSource);
 }

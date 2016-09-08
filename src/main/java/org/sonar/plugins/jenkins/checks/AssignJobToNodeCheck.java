@@ -10,6 +10,11 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
+/**
+ * Checks if a job is assigned to a node or label.
+ * @author dhinske
+ *
+ */
 @Rule(key = "AssignJobToNodeCheck", name = "Every job should be assigned to a node or label", priority = Priority.MINOR, tags = {
 		"convention" })
 @BelongsToProfile(title = CheckRepository.SONAR_WAY_PROFILE_NAME, priority = Priority.MAJOR)
@@ -29,10 +34,10 @@ public class AssignJobToNodeCheck extends AbstractConfigXmlCheck {
 			}
 			break;
 		case PIPELINE:
-			
+			//TODO: implement
 			break;
 		case MB_PIPELINE:
-			
+			//TODO: implement
 			break;
 		default:
 			break;

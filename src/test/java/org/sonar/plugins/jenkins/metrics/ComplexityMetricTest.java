@@ -15,6 +15,7 @@ import static org.mockito.Mockito.doAnswer;
 import org.sonar.plugins.jenkins.config.ConfigSources;
 import org.sonar.plugins.jenkins.config.JobConfig;
 import org.sonar.plugins.jenkins.config.types.ConfigXml;
+
 import static org.junit.Assert.assertEquals;
 
 public class ComplexityMetricTest {

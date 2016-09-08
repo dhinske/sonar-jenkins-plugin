@@ -63,6 +63,7 @@ public class JenkinsSensor implements Sensor {
 		ComplexityMetric.calculateMetric(configSources, sensorContext);
 		
 		// run checks
+		LOG.debug("running " + checks.all().size()+ " checks for " + configSources.getJobs().size() + " jobs");
 		for (JobConfig config : configSources.getJobs().values()) {
 			runChecks(config);
 		}

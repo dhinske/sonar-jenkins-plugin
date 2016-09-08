@@ -15,7 +15,7 @@ public class CheckRepository {
 
 	public static List<AbstractConfigXmlCheck> getChecks() {
 		return ImmutableList.of(new PollingCheck(), new UseLogRotatorCheck(), new MaxArchiveLatestBuildCheck(),
-				new TemplateShouldBeDeactivatedCheck(), new AssignJobToNodeCheck());
+				new TemplateShouldBeDeactivatedCheck(), new AssignJobToNodeCheck(), new UseTimestampPluginCheck(), new JobNameSanityCheck());
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -10,7 +10,14 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
-@Rule(key = "UseTimestampPlugin", name = "You should use the Timestamp-Plugin", priority = Priority.INFO, tags = {
+/**
+ * Checks if the timestamp-plugin is being used. Enforcing this plugin leads to
+ * timestamps in each console output.
+ * 
+ * @author dhinske
+ *
+ */
+@Rule(key = "UseTimestampPluginCheck", name = "You should use the Timestamp-Plugin", priority = Priority.INFO, tags = {
 		"convention" })
 @BelongsToProfile(title = CheckRepository.SONAR_WAY_PROFILE_NAME, priority = Priority.INFO)
 @SqaleSubCharacteristic(RulesDefinition.SubCharacteristics.READABILITY)
@@ -25,14 +32,15 @@ public class UseTimestampPluginCheck extends AbstractConfigXmlCheck {
 			Document document = jobConfig.getConfigXml().getDocument();
 			NodeList nodes = document.getElementsByTagName("hudson.plugins.timestamper.TimestamperBuildWrapper");
 			if (nodes.getLength() == 0) {
-				jobConfig.getConfigXml().createViolation(getRuleKey(), 1, "Every job should use the Timestamper-Plugin.");
+				jobConfig.getConfigXml().createViolation(getRuleKey(), 1,
+						"Every job should use the Timestamper-Plugin.");
 			}
 			break;
 		case PIPELINE:
-			
+
 			break;
 		case MB_PIPELINE:
-			
+
 			break;
 		default:
 			break;
