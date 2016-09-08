@@ -11,10 +11,10 @@ import org.sonar.plugins.jenkins.config.types.ConfigXml;
  */
 public class ConfigSources {
 
-	private Map<String, JobConfig> jobs;
+	private Map<String, JobConfiguration> jobs;
 	private WorkflowLibs workFlowLibs;
 	
-	public Map<String, JobConfig> getJobs() {
+	public Map<String, JobConfiguration> getJobs() {
 		return jobs;
 	}
 
@@ -35,10 +35,10 @@ public class ConfigSources {
 		
 		// config.xml
 		if (fileName.equals("config.xml")) {
-			JobConfig config = jobs.get(file.file().getParentFile().getName());
+			JobConfiguration config = jobs.get(file.file().getParentFile().getName());
 			
 			if (config == null) {
-				config = new JobConfig(file.file().getParentFile().getName());
+				config = new JobConfiguration(file.file().getParentFile().getName());
 				config.setConfigXml(new ConfigXml(file));
 				if (!(config.getConfigXml().getJobType() == null)) {
 					jobs.put(file.file().getParentFile().getName(), config);					
@@ -57,7 +57,7 @@ public class ConfigSources {
 		// TODO: additional groovy-scripts
 	}
 	
-	public void addJob(JobConfig jobConfig) {
+	public void addJob(JobConfiguration jobConfig) {
 		jobs.put(jobConfig.getName(), jobConfig);
 	}
 	

@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
+/**
+ * Keeps the default quality profile and defines the default checks.
+ * @author dhinske
+ *
+ */
 public class CheckRepository {
 
 	public static final String REPOSITORY_KEY = "jenkins";
@@ -27,5 +32,4 @@ public class CheckRepository {
 		}
 		return builder.build();
 	}
-
 }

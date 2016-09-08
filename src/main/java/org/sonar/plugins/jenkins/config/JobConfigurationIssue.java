@@ -2,13 +2,13 @@ package org.sonar.plugins.jenkins.config;
 
 import org.sonar.api.rule.RuleKey;
 
-public class JobConfigIssue {
+public class JobConfigurationIssue {
 
 	private final RuleKey ruleKey;
 	private final Integer line;
 	private final String message;
 
-	public JobConfigIssue(RuleKey ruleKey, Integer line, String message) {
+	public JobConfigurationIssue(RuleKey ruleKey, Integer line, String message) {
 		this.ruleKey = ruleKey;
 		this.line = line;
 		this.message = message;

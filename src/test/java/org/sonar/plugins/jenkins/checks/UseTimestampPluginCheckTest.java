@@ -6,7 +6,7 @@ import java.io.File;
 
 import org.junit.Test;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
-import org.sonar.plugins.jenkins.config.JobConfig;
+import org.sonar.plugins.jenkins.config.JobConfiguration;
 import org.sonar.plugins.jenkins.config.types.ConfigXml;
 
 public class UseTimestampPluginCheckTest {
@@ -15,7 +15,7 @@ public class UseTimestampPluginCheckTest {
 	public void test() {
 		DefaultInputFile inputFile = new DefaultInputFile("");
 		inputFile.setFile(new File("src/test/resources/timestamp_config.xml"));
-		JobConfig config = new JobConfig("Timestamp");
+		JobConfiguration config = new JobConfiguration("Timestamp");
 		config.setConfigXml(new ConfigXml(inputFile));
 
 		UseTimestampPluginCheck check = new UseTimestampPluginCheck();
@@ -24,7 +24,7 @@ public class UseTimestampPluginCheckTest {
 
 		inputFile = new DefaultInputFile("");
 		inputFile.setFile(new File("src/test/resources/no_timestamp_config.xml"));
-		config = new JobConfig("NoTimestamp");
+		config = new JobConfiguration("NoTimestamp");
 		config.setConfigXml(new ConfigXml(inputFile));
 
 		check.validate(config);

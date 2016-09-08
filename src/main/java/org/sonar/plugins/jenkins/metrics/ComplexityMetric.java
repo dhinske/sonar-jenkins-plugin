@@ -12,7 +12,7 @@ import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.Metrics;
 import org.sonar.api.measures.SumChildValuesFormula;
 import org.sonar.plugins.jenkins.config.ConfigSources;
-import org.sonar.plugins.jenkins.config.JobConfig;
+import org.sonar.plugins.jenkins.config.JobConfiguration;
 import org.sonar.plugins.jenkins.config.JobType;
 import org.w3c.dom.NodeList;
 
@@ -24,7 +24,7 @@ public class ComplexityMetric implements Metrics{
 		LOG.info("Calculating complexity-metrics for jobs");
 		double overallComplexity = 0;
 		
-		for (JobConfig jobConfig : configSources.getJobs().values()) {
+		for (JobConfiguration jobConfig : configSources.getJobs().values()) {
 			JobType type = jobConfig.getConfigXml().getJobType();
 			if (type == null) {
 				LOG.info("Could not get JobType for " + jobConfig.getName());

@@ -5,11 +5,11 @@ import org.sonar.plugins.jenkins.config.types.ConfigXml;
 /**
  * Represents all known configuration for a single job.
  */
-public class JobConfig {
+public class JobConfiguration {
 	private String name;
 	private ConfigXml configXml;
 
-	public JobConfig(String name) {
+	public JobConfiguration(String name) {
 		this.name = name;
 		configXml = null;
 	}

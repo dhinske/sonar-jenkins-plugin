@@ -1,7 +1,7 @@
 package org.sonar.plugins.jenkins.config.types;
 
 import org.sonar.api.batch.fs.InputFile;
-import org.sonar.plugins.jenkins.config.JobConfigIssue;
+import org.sonar.plugins.jenkins.config.JobConfigurationIssue;
 
 public class Pipeline {
 	private InputFile xmlFile;
@@ -11,7 +11,7 @@ public class Pipeline {
 
 	}
 
-	public void addViolation(JobConfigIssue issue) {
+	public void addViolation(JobConfigurationIssue issue) {
 		//
 	}
 }

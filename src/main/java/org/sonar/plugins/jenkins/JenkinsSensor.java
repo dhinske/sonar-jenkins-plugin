@@ -18,14 +18,19 @@ import org.sonar.api.resources.Project;
 import org.sonar.plugins.jenkins.checks.AbstractConfigXmlCheck;
 import org.sonar.plugins.jenkins.checks.CheckRepository;
 import org.sonar.plugins.jenkins.config.ConfigSources;
-import org.sonar.plugins.jenkins.config.JobConfig;
-import org.sonar.plugins.jenkins.config.JobConfigIssue;
+import org.sonar.plugins.jenkins.config.JobConfiguration;
+import org.sonar.plugins.jenkins.config.JobConfigurationIssue;
 import org.sonar.plugins.jenkins.language.Jenkins;
 import org.sonar.plugins.jenkins.metrics.ComplexityMetric;
 import org.sonar.plugins.jenkins.metrics.JobTypeMetric;
 
 import com.google.common.annotations.VisibleForTesting;
 
+/**
+ * The sensor is invoked once during the analysis of a project. It will trigger all @Checks for all @JobConfiguration.
+ * @author dhinske
+ *
+ */
 public class JenkinsSensor implements Sensor {
 
 	private final Checks<Object> checks;
@@ -64,12 +69,12 @@ public class JenkinsSensor implements Sensor {
 		
 		// run checks
 		LOG.debug("running " + checks.all().size()+ " checks for " + configSources.getJobs().size() + " jobs");
-		for (JobConfig config : configSources.getJobs().values()) {
+		for (JobConfiguration config : configSources.getJobs().values()) {
 			runChecks(config);
 		}
 	}
 
-	private void runChecks(JobConfig jobConfig) {
+	private void runChecks(JobConfiguration jobConfig) {
 		try {
 			for (Object check : checks.all()) {
 				LOG.debug(((AbstractConfigXmlCheck) check).getRuleKey() + " - " + jobConfig.getName());
@@ -92,8 +97,8 @@ public class JenkinsSensor implements Sensor {
 	}
 
 	@VisibleForTesting
-	protected void saveIssue(JobConfig jobConfig) {
-		for (JobConfigIssue xmlIssue : jobConfig.getConfigXml().getConfigIssues()) {
+	protected void saveIssue(JobConfiguration jobConfig) {
+		for (JobConfigurationIssue xmlIssue : jobConfig.getConfigXml().getConfigIssues()) {
 			Issuable issuable = resourcePerspectives.as(Issuable.class, jobConfig.getConfigXml().getInputFile());
 
 			if (issuable != null) {

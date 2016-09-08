@@ -13,7 +13,7 @@ import org.sonar.api.measures.Measure;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doAnswer;
 import org.sonar.plugins.jenkins.config.ConfigSources;
-import org.sonar.plugins.jenkins.config.JobConfig;
+import org.sonar.plugins.jenkins.config.JobConfiguration;
 import org.sonar.plugins.jenkins.config.types.ConfigXml;
 
 import static org.junit.Assert.assertEquals;
@@ -36,7 +36,7 @@ public class ComplexityMetricTest {
 		inputFile.setFile(new File("src/test/resources/complexity_config.xml"));
 		ConfigXml configXml = new ConfigXml(inputFile);
 
-		JobConfig jobConfig = new JobConfig("complexity-test");
+		JobConfiguration jobConfig = new JobConfiguration("complexity-test");
 		jobConfig.setConfigXml(configXml);
 
 		configSources.addJob(jobConfig);
