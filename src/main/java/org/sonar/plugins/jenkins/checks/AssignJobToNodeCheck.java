@@ -7,7 +7,6 @@ import org.sonar.check.Rule;
 import org.sonar.plugins.jenkins.config.JobConfiguration;
 import org.sonar.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 /**
@@ -27,8 +26,7 @@ public class AssignJobToNodeCheck extends AbstractConfigXmlCheck {
 
 		switch (jobConfig.getJobType()) {
 		case FREESTYLE:
-			Document document = jobConfig.getConfigXml().getDocument();
-			NodeList nodes = document.getElementsByTagName("assignedNode");
+			NodeList nodes = jobConfig.getConfigXml().getDocument().getElementsByTagName("assignedNode");
 			if (nodes.getLength() > 0) {
 				jobConfig.getConfigXml().createViolation(getRuleKey(), 1, "Every job should be assigned to a node or label.");
 			}

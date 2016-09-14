@@ -2,7 +2,11 @@ package org.sonar.plugins.jenkins.config;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
+import org.sonar.plugins.jenkins.JenkinsSensor;
 import org.sonar.plugins.jenkins.config.types.ConfigXml;
 
 /**
@@ -10,7 +14,9 @@ import org.sonar.plugins.jenkins.config.types.ConfigXml;
  * config.xml, pipeline, workflowLib
  */
 public class ConfigSources {
-
+	
+	private static final Logger LOG = LoggerFactory.getLogger(ConfigSources.class);
+	
 	private Map<String, JobConfiguration> jobs;
 	private WorkflowLibs workFlowLibs;
 	
@@ -34,7 +40,7 @@ public class ConfigSources {
 		String fileName = file.file().getName();
 		
 		// config.xml
-		if (fileName.equals("config.xml")) {
+		if ("config.xml".equals(fileName)) {
 			JobConfiguration config = jobs.get(file.file().getParentFile().getName());
 			
 			if (config == null) {
@@ -55,10 +61,11 @@ public class ConfigSources {
 		// TODO: workflow-libs
 		
 		// TODO: additional groovy-scripts
+		
+		LOG.debug("Could not find source-type for " + fileName);
 	}
 	
 	public void addJob(JobConfiguration jobConfig) {
 		jobs.put(jobConfig.getName(), jobConfig);
-	}
-	
+	}	
 }

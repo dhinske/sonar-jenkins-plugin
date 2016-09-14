@@ -34,7 +34,7 @@ public class ConfigXml extends JobConfigSource {
 			dBuilder = dbFactory.newDocumentBuilder();
 			xmlDocument = dBuilder.parse(inputFile.file());
 		} catch (Exception e) {
-			LOG.error("Could not convert " + inputFile.absolutePath() + "into a w3c-document: " + e.getMessage());
+			LOG.error("Could not convert " + inputFile.absolutePath() + "into a w3c-document: " + e);
 			xmlDocument = null;
 		}
 	}

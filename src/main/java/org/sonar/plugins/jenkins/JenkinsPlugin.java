@@ -11,6 +11,11 @@ import org.sonar.plugins.jenkins.rules.ConfigXmlSonarWayProfile;
 
 import java.util.List;
 
+/**
+ * Entry point class which provides all extensions
+ * @author dhinske
+ *
+ */
 public final class JenkinsPlugin extends SonarPlugin {
 
 	public static final String FILE_SUFFIXES_KEY = "sonar.jenkins.file.suffixes";
