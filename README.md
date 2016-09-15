@@ -10,3 +10,6 @@ This sonar-plugin analysis all job-configurations of your Jenkins-instance. It o
 - create pom.xml in the jenkins-installation-folder (see src/main/resources/example_pom.xml)
 - adapt the pom.xml with your system
 - run mvn sonar:sonar
+
+#How to add custom rules#
+coming soon

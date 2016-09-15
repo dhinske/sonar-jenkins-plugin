@@ -44,19 +44,16 @@ public class ComplexityMetric implements Metrics{
 					overallComplexity += complexity;
 					break;
 				case PIPELINE:
-//					sensorContext.saveMeasure(jobConfig.getConfigXml().getInputFile(), AMOUNT_PIPELINE, 1.0);
-//					overallComplexity++;
+					//TODO
 					break;
 				case MB_PIPELINE:
-//					sensorContext.saveMeasure(jobConfig.getConfigXml().getInputFile(), AMOUNT_MB_PIPELINE, 1.0);
-//					overallComplexity++;
+					//TODO
 					break;
 				default:
 					break;
 				}	
 			}
 		}
-		
 		Measure<Integer> measure;
 		measure = new Measure<Integer>(ComplexityMetric.COMPLEXITY_JOBS);
 		measure.setValue(overallComplexity);

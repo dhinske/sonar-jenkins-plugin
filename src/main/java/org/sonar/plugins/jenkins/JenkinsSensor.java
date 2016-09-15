@@ -57,8 +57,8 @@ public class JenkinsSensor implements Sensor {
 	 */
 	@Override
 	public void analyse(Project project, SensorContext sensorContext) {
+		// organize every config-file the Jenkins-instance has
 		for (InputFile inputFile : fileSystem.inputFiles(mainFilesPredicate)) {
-			// organize every config-file the Jenkins-instance has
 			configSources.addSource(inputFile);
 			LOG.debug("analyse " + inputFile.file().getAbsolutePath());
 		}
@@ -77,7 +77,7 @@ public class JenkinsSensor implements Sensor {
 	private void runChecks(JobConfiguration jobConfig) {
 		try {
 			for (Object check : checks.all()) {
-				LOG.debug(((AbstractConfigXmlCheck) check).getRuleKey() + " - " + jobConfig.getName());
+				LOG.debug(checks.ruleKey(check) + " - " + jobConfig.getName());
 				((AbstractConfigXmlCheck) check).setRuleKey(checks.ruleKey(check));
 				((AbstractConfigXmlCheck) check).validate(jobConfig);
 			}

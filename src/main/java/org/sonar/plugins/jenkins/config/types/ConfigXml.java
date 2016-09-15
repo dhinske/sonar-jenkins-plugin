@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.plugins.jenkins.config.JobType;
 import org.w3c.dom.Document;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -68,5 +67,19 @@ public class ConfigXml extends JobConfigSource {
 		default:
 			return null;
 		}
+	}
+
+	/**
+	 * Method to access the embedded pipeline-script in the config.xml (if
+	 * existent).
+	 * 
+	 * @return the pipeline-script embedded in the JobConfiguration (not
+	 *         externally stored). Returns null if not existent.
+	 */
+	public String getEmbeddedPipeline() {
+		if (getJobType().equals(JobType.PIPELINE)) {
+			return xmlDocument.getElementsByTagName("script").item(0).getTextContent();			
+		}
+		return null;
 	}
 }

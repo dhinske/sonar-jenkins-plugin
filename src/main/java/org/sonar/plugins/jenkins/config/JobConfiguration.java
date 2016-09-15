@@ -1,6 +1,7 @@
 package org.sonar.plugins.jenkins.config;
 
 import org.sonar.plugins.jenkins.config.types.ConfigXml;
+import org.sonar.plugins.jenkins.config.types.Pipeline;
 
 /**
  * Represents all known configuration for a single job.
@@ -8,10 +9,12 @@ import org.sonar.plugins.jenkins.config.types.ConfigXml;
 public class JobConfiguration {
 	private String name;
 	private ConfigXml configXml;
+	private Pipeline pipeline;
 
 	public JobConfiguration(String name) {
 		this.name = name;
 		configXml = null;
+		pipeline = null;
 	}
 
 	public String getName() {
@@ -26,6 +29,14 @@ public class JobConfiguration {
 		this.configXml = configXml;
 	}
 	
+	public Pipeline getPipeline() {
+		return pipeline;
+	}
+	
+	public void setPipeline(Pipeline pipeline) {
+		this.pipeline = pipeline;
+	}
+
 	/**
 	 * Checks the config.xml to get the JobType.
 	 * Returns null if unknown.
