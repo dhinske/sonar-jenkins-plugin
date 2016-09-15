@@ -32,15 +32,14 @@ public class PipelineLengthCheck extends AbstractConfigXmlCheck {
 		switch (jobConfig.getJobType()) {
 		case PIPELINE:
 			int linesOfCode = 0;
-			Scanner scanner = null;
-
 			// pipeline is defined in the job-config
 			String embeddedPipelineScript = jobConfig.getConfigXml().getEmbeddedPipeline();
 			if (embeddedPipelineScript != null) {
-				scanner = new Scanner(embeddedPipelineScript);
-				while (scanner.hasNextLine()) {
-					linesOfCode++;
-					scanner.nextLine();
+				try (Scanner scanner = new Scanner(embeddedPipelineScript)){
+					while (scanner.hasNextLine()) {
+						linesOfCode++;
+						scanner.nextLine();
+					}
 				}
 				if (linesOfCode > THRESHOLD) {
 					jobConfig.getConfigXml().createViolation(getRuleKey(), 1,
@@ -49,7 +48,6 @@ public class PipelineLengthCheck extends AbstractConfigXmlCheck {
 			} else { // pipeline is defined externally
 				// TODO: implement
 			}
-			scanner.close();
 			break;
 		case MB_PIPELINE:
 			// TODO: implement
