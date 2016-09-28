@@ -14,14 +14,14 @@ public class PipelineLengthCheckTest {
 	@Test
 	public void test() {
 		DefaultInputFile inputFile = new DefaultInputFile("");
-		inputFile.setFile(new File("src/test/resources/pipeline_length_config.xml"));
+		inputFile.setFile(new File("src/test/resources/checks/pipeline_length_config.xml"));
 		JobConfiguration config = new JobConfiguration("Pipeline_Short");
 		config.setConfigXml(new ConfigXml(inputFile));
 		PipelineLengthCheck check = new PipelineLengthCheck();
 		check.validate(config);
 		assertEquals(0, config.getConfigXml().getConfigIssues().size());
 		
-		inputFile.setFile(new File("src/test/resources/pipeline_length_long_config.xml"));
+		inputFile.setFile(new File("src/test/resources/checks/pipeline_length_long_config.xml"));
 		config = new JobConfiguration("Pipeline_Short");
 		config.setConfigXml(new ConfigXml(inputFile));
 		check.validate(config);

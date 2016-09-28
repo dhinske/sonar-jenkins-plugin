@@ -14,7 +14,7 @@ public class UseTimestampPluginCheckTest {
 	@Test
 	public void test() {
 		DefaultInputFile inputFile = new DefaultInputFile("");
-		inputFile.setFile(new File("src/test/resources/timestamp_config.xml"));
+		inputFile.setFile(new File("src/test/resources/checks/timestamp_config.xml"));
 		JobConfiguration config = new JobConfiguration("Timestamp");
 		config.setConfigXml(new ConfigXml(inputFile));
 
@@ -23,7 +23,7 @@ public class UseTimestampPluginCheckTest {
 		assertEquals(0, config.getConfigXml().getConfigIssues().size());
 
 		inputFile = new DefaultInputFile("");
-		inputFile.setFile(new File("src/test/resources/no_timestamp_config.xml"));
+		inputFile.setFile(new File("src/test/resources/checks/no_timestamp_config.xml"));
 		config = new JobConfiguration("NoTimestamp");
 		config.setConfigXml(new ConfigXml(inputFile));
 

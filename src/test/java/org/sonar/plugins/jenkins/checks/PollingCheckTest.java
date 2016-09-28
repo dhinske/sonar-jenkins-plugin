@@ -14,7 +14,7 @@ public class PollingCheckTest {
 	@Test
 	public void test() {
 		DefaultInputFile inputFile = new DefaultInputFile("");
-		inputFile.setFile(new File("src/test/resources/polling_config.xml"));
+		inputFile.setFile(new File("src/test/resources/checks/polling_config.xml"));
 		JobConfiguration config = new JobConfiguration("Polling");
 		config.setConfigXml(new ConfigXml(inputFile));
 
@@ -23,7 +23,7 @@ public class PollingCheckTest {
 		assertEquals(1, config.getConfigXml().getConfigIssues().size());
 
 		inputFile = new DefaultInputFile("");
-		inputFile.setFile(new File("src/test/resources/noPolling_config.xml"));
+		inputFile.setFile(new File("src/test/resources/checks/noPolling_config.xml"));
 		config = new JobConfiguration("NoPolling");
 		config.setConfigXml(new ConfigXml(inputFile));
 

@@ -14,7 +14,7 @@ public class AssignJobToNodeCheckTest {
 	@Test
 	public void test() {
 		DefaultInputFile inputFile = new DefaultInputFile("");
-		inputFile.setFile(new File("src/test/resources/assigned_config.xml"));
+		inputFile.setFile(new File("src/test/resources/checks/assigned_config.xml"));
 		JobConfiguration config = new JobConfiguration("Assigned");
 		config.setConfigXml(new ConfigXml(inputFile));
 
@@ -23,7 +23,7 @@ public class AssignJobToNodeCheckTest {
 		assertEquals(1, config.getConfigXml().getConfigIssues().size());
 
 		inputFile = new DefaultInputFile("");
-		inputFile.setFile(new File("src/test/resources/not_assigned_config.xml"));
+		inputFile.setFile(new File("src/test/resources/checks/not_assigned_config.xml"));
 		config = new JobConfiguration("NotAssigned");
 		config.setConfigXml(new ConfigXml(inputFile));
 

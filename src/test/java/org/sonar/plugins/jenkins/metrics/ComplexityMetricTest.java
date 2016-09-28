@@ -33,7 +33,7 @@ public class ComplexityMetricTest {
 		}).when(sensorContext).saveMeasure(any(Measure.class));
 
 		DefaultInputFile inputFile = new DefaultInputFile("");
-		inputFile.setFile(new File("src/test/resources/complexity_config.xml"));
+		inputFile.setFile(new File("src/test/resources/metrics/complexity_config.xml"));
 		ConfigXml configXml = new ConfigXml(inputFile);
 
 		JobConfiguration jobConfig = new JobConfiguration("complexity-test");

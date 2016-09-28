@@ -27,9 +27,10 @@ import org.sonar.plugins.jenkins.metrics.JobTypeMetric;
 import com.google.common.annotations.VisibleForTesting;
 
 /**
- * The sensor is invoked once during the analysis of a project. It will trigger all @Checks for all @JobConfiguration.
+ * The sensor is invoked once during the analysis of a project. It will trigger
+ * all @Checks for all @JobConfiguration.
+ * 
  * @author dhinske
- *
  */
 public class JenkinsSensor implements Sensor {
 
@@ -38,7 +39,7 @@ public class JenkinsSensor implements Sensor {
 	private final ResourcePerspectives resourcePerspectives;
 	private final FilePredicate mainFilesPredicate;
 	private static final Logger LOG = LoggerFactory.getLogger(JenkinsSensor.class);
-	
+
 	private ConfigSources configSources;
 
 	public JenkinsSensor(FileSystem fileSystem, ResourcePerspectives resourcePerspectives, CheckFactory checkFactory) {
@@ -48,7 +49,7 @@ public class JenkinsSensor implements Sensor {
 		this.resourcePerspectives = resourcePerspectives;
 		this.mainFilesPredicate = fileSystem.predicates().and(fileSystem.predicates().hasType(InputFile.Type.MAIN),
 				fileSystem.predicates().hasLanguage(Jenkins.KEY));
-		
+
 		configSources = new ConfigSources();
 	}
 
@@ -57,20 +58,28 @@ public class JenkinsSensor implements Sensor {
 	 */
 	@Override
 	public void analyse(Project project, SensorContext sensorContext) {
-		// organize every config-file the Jenkins-instance has
-		for (InputFile inputFile : fileSystem.inputFiles(mainFilesPredicate)) {
-			configSources.addSource(inputFile);
-			LOG.debug("analyse " + inputFile.file().getAbsolutePath());
-		}
-		
+		readFiles(fileSystem.inputFiles(mainFilesPredicate));
+
 		// run metrics
 		JobTypeMetric.calculateMetric(configSources, sensorContext);
 		ComplexityMetric.calculateMetric(configSources, sensorContext);
-		
+
 		// run checks
-		LOG.debug("running " + checks.all().size()+ " checks for " + configSources.getJobs().size() + " jobs");
+		LOG.debug("running " + checks.all().size() + " checks for " + configSources.getJobs().size() + " jobs");
 		for (JobConfiguration config : configSources.getJobs().values()) {
 			runChecks(config);
+		}
+	}
+
+	/**
+	 * organize every config-file the Jenkins-instance has
+	 * 
+	 * @param iterable contains all inputFiles
+	 */
+	private void readFiles(Iterable<InputFile> iterable) {
+		for (InputFile inputFile : fileSystem.inputFiles(mainFilesPredicate)) {
+			configSources.addSource(inputFile);
+			LOG.debug("analyse " + inputFile.file().getAbsolutePath());
 		}
 	}
 
